@@ -46,7 +46,8 @@ INSTALLED_APPS_DJANGO = [
 INSTALLED_MY_APPS = [
     'account.apps.AccountConfig',
     'member.apps.MemberConfig',
-    'report_system.apps.ReportSystemConfig'
+    'report_system.apps.ReportSystemConfig',
+    'incident.apps.IncidentConfig'
 ]
 
 INSTALLED_APPS = INSTALLED_APPS_DJANGO + INSTALLED_MY_APPS

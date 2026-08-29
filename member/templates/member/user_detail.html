@@ -1,0 +1,232 @@
+{% extends "master.html" %}
+
+{% block title %}User Profile{% endblock %}
+
+{% block content %}
+
+<div class="min-h-screen bg-slate-100">
+
+    <main class="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
+
+        <div class="mb-6">
+
+            <a
+                href="{% url 'list_user' %}"
+                class="inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-blue-600"
+            >
+
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M15 19l-7-7 7-7"/>
+                </svg>
+
+                Back to Users
+
+            </a>
+
+        </div>
+
+
+        <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+
+            <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-8 sm:px-8">
+
+                <div class="flex flex-col items-center gap-4 sm:flex-row">
+
+                    <div class="flex h-20 w-20 items-center justify-center rounded-full bg-white text-2xl font-bold uppercase text-blue-700 shadow-lg">
+
+                        {% if my_user.first_name %}
+                            {{ my_user.first_name|first|upper }}
+                        {% else %}
+                            {{ my_user.username|first|upper }}
+                        {% endif %}
+
+                    </div>
+
+                    <div class="text-center sm:text-left">
+
+                        <h1 class="text-2xl font-bold text-white">
+
+                            {% if my_user.get_full_name %}
+                                {{ my_user.get_full_name }}
+                            {% else %}
+                                {{ my_user.username }}
+                            {% endif %}
+
+                        </h1>
+
+                        <p class="mt-1 text-sm text-blue-100">
+                            @{{ my_user.username }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="p-6 sm:p-8">
+
+                <div class="mb-6 flex items-center justify-between">
+
+                    <div>
+
+                        <h2 class="text-lg font-bold text-slate-900">
+                            Profile Information
+                        </h2>
+
+                        <p class="mt-1 text-sm text-slate-500">
+                            Account details and access information.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+
+
+                    <div class="rounded-xl border border-slate-100 bg-slate-50 p-4">
+
+                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                            First Name
+                        </p>
+
+                        <p class="mt-2 text-sm font-semibold text-slate-800">
+                            {{ my_user.first_name|default:"Not provided" }}
+                        </p>
+
+                    </div>
+
+
+                    <div class="rounded-xl border border-slate-100 bg-slate-50 p-4">
+
+                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                            Last Name
+                        </p>
+
+                        <p class="mt-2 text-sm font-semibold text-slate-800">
+                            {{ my_user.last_name|default:"Not provided" }}
+                        </p>
+
+                    </div>
+
+
+                    <div class="rounded-xl border border-slate-100 bg-slate-50 p-4">
+
+                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                            Username
+                        </p>
+
+                        <p class="mt-2 text-sm font-semibold text-slate-800">
+                            {{ my_user.username }}
+                        </p>
+
+                    </div>
+
+
+                    <div class="rounded-xl border border-slate-100 bg-slate-50 p-4">
+
+                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                            Email
+                        </p>
+
+                        <p class="mt-2 break-all text-sm font-semibold text-slate-800">
+                            {{ my_user.email|default:"Not provided" }}
+                        </p>
+
+                    </div>
+
+
+                    <div class="rounded-xl border border-slate-100 bg-slate-50 p-4">
+
+                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                            Role
+                        </p>
+
+                        <div class="mt-2">
+
+                            {% if my_user.is_superuser %}
+
+                                <span class="rounded-full bg-purple-50 px-3 py-1 text-xs font-semibold text-purple-700">
+                                    Administrator
+                                </span>
+
+                            {% elif my_user.is_staff %}
+
+                                <span class="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
+                                    Staff
+                                </span>
+
+                            {% else %}
+
+                                <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
+                                    User
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="rounded-xl border border-slate-100 bg-slate-50 p-4">
+
+                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                            Account Status
+                        </p>
+
+                        <div class="mt-2">
+
+                            {% if my_user.is_active %}
+
+                                <span class="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+
+                                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+
+                                    Active
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="inline-flex items-center gap-2 rounded-full bg-red-50 px-3 py-1 text-xs font-semibold text-red-700">
+
+                                    <span class="h-1.5 w-1.5 rounded-full bg-red-500"></span>
+
+                                    Inactive
+
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="mt-8 flex justify-end">
+
+                    <a
+                        href="{% url 'edit_user' my_user.id %}"
+                        class="rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700"
+                    >
+                        Edit Profile
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+{% endblock %}

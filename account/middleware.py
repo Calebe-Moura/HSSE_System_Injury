@@ -20,6 +20,8 @@ class LoginRequiredMiddleware:
             # Se não estiver em uma URL pública
             if request.path not in login_not_required:
                 return redirect('login')
+            else:
+                return redirect('start')
 
         # Continua normalmente
         response = self.get_response(request)

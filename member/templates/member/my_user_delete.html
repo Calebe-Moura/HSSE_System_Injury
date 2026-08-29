@@ -1,0 +1,157 @@
+{% extends "master.html" %}
+
+{% block title %}Delete My Profile{% endblock %}
+
+{% block content %}
+
+<div class="min-h-screen bg-slate-100">
+
+    <main class="mx-auto flex max-w-2xl items-center justify-center px-4 py-16 sm:px-6 lg:px-8">
+
+        <div class="w-full overflow-hidden rounded-2xl border border-red-200 bg-white shadow-sm">
+
+
+            <div class="border-b border-red-100 bg-red-50 px-6 py-6 sm:px-8">
+
+                <div class="flex items-center gap-4">
+
+                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
+
+                        <svg
+                            class="h-6 w-6 text-red-600"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 9v4m0 4h.01M10.29 3.86l-7.2 12.48A2 2 0 004.82 19h14.36a2 2 0 001.73-2.66l-7.2-12.48a2 2 0 00-3.42 0z"
+                            />
+
+                        </svg>
+
+                    </div>
+
+
+                    <div>
+
+                        <h1 class="text-xl font-bold text-red-700">
+                            Delete My Profile
+                        </h1>
+
+                        <p class="mt-1 text-sm text-red-600">
+                            This action cannot be undone.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="p-6 sm:p-8">
+
+                <div class="rounded-xl bg-slate-50 p-5">
+
+                    <p class="text-sm leading-6 text-slate-600">
+
+                        You are about to permanently delete your account.
+
+                        All information associated with your profile will be removed
+                        and you will be signed out.
+
+                    </p>
+
+                </div>
+
+
+                <div class="mt-6">
+
+                    <p class="text-sm font-semibold text-slate-800">
+                        Account
+                    </p>
+
+                    <div class="mt-3 flex items-center gap-3 rounded-xl border border-slate-200 p-4">
+
+                        <div class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-sm font-bold uppercase text-blue-700">
+
+                            {% if request.user.first_name %}
+
+                                {{ request.user.first_name|first|upper }}
+
+                            {% else %}
+
+                                {{ request.user.username|first|upper }}
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="min-w-0">
+
+                            <p class="truncate text-sm font-semibold text-slate-800">
+
+                                {% if request.user.get_full_name %}
+
+                                    {{ request.user.get_full_name }}
+
+                                {% else %}
+
+                                    {{ request.user.username }}
+
+                                {% endif %}
+
+                            </p>
+
+                            <p class="truncate text-xs text-slate-500">
+
+                                {{ request.user.email }}
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+
+                    <a
+                        href="{% url 'my_user' %}"
+                        class="inline-flex items-center justify-center rounded-xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50"
+                    >
+                        Cancel
+                    </a>
+
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        <button
+                            type="submit"
+                            class="w-full rounded-xl bg-red-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-red-600/20 transition hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-500/20 sm:w-auto"
+                        >
+                            Permanently Delete Account
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+{% endblock %}
