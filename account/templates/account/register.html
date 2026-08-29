@@ -1,0 +1,325 @@
+{% extends "base.html" %}
+
+{% block title %}Create Account | System{% endblock %}
+
+{% block content %}
+
+<div class="min-h-screen bg-slate-100 px-4 py-10 sm:px-6 lg:px-8">
+
+    <div class="mx-auto w-full max-w-3xl">
+
+        <div class="mb-8 text-center">
+
+            <div class="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600 shadow-lg shadow-blue-600/20">
+
+                <svg
+                    class="h-6 w-6 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"
+                    />
+                </svg>
+
+            </div>
+
+            <h1 class="text-3xl font-bold tracking-tight text-slate-900">
+                Create your account
+            </h1>
+
+            <p class="mt-2 text-sm text-slate-500">
+                Fill in the information below to create your system account.
+            </p>
+
+        </div>
+
+
+        <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl shadow-slate-200/50">
+
+            <div class="border-b border-slate-100 bg-slate-50 px-6 py-5 sm:px-8">
+
+                <div class="flex items-center gap-3">
+
+                    <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-100">
+
+                        <svg
+                            class="h-5 w-5 text-blue-600"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M18 9v6m3-3h-6M9 12a4 4 0 100-8 4 4 0 000 8zM3 21a6 6 0 0112 0"
+                            />
+                        </svg>
+
+                    </div>
+
+                    <div>
+
+                        <h2 class="text-sm font-semibold text-slate-900">
+                            Account Information
+                        </h2>
+
+                        <p class="text-xs text-slate-500">
+                            Your account credentials
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <form method="POST" class="p-6 sm:p-8">
+
+                {% csrf_token %}
+
+
+                {% if form.non_field_errors %}
+
+                    <div class="mb-6 rounded-xl border border-red-200 bg-red-50 p-4">
+
+                        {% for error in form.non_field_errors %}
+
+                            <p class="text-sm font-medium text-red-700">
+                                {{ error }}
+                            </p>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+
+                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+
+
+                    <div>
+
+                        <label
+                            for="{{ form.first_name.id_for_label }}"
+                            class="mb-2 block text-sm font-semibold text-slate-700"
+                        >
+                            First name
+                        </label>
+
+                        {{ form.first_name }}
+
+                        {% for error in form.first_name.errors %}
+
+                            <p class="mt-2 text-sm text-red-600">
+                                {{ error }}
+                            </p>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <div>
+
+                        <label
+                            for="{{ form.last_name.id_for_label }}"
+                            class="mb-2 block text-sm font-semibold text-slate-700"
+                        >
+                            Last name
+                        </label>
+
+                        {{ form.last_name }}
+
+                        {% for error in form.last_name.errors %}
+
+                            <p class="mt-2 text-sm text-red-600">
+                                {{ error }}
+                            </p>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <div>
+
+                        <label
+                            for="{{ form.username.id_for_label }}"
+                            class="mb-2 block text-sm font-semibold text-slate-700"
+                        >
+                            Username
+                        </label>
+
+                        {{ form.username }}
+
+                        {% for error in form.username.errors %}
+
+                            <p class="mt-2 text-sm text-red-600">
+                                {{ error }}
+                            </p>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <div>
+
+                        <label
+                            for="{{ form.email.id_for_label }}"
+                            class="mb-2 block text-sm font-semibold text-slate-700"
+                        >
+                            Email address
+                        </label>
+
+                        {{ form.email }}
+
+                        {% for error in form.email.errors %}
+
+                            <p class="mt-2 text-sm text-red-600">
+                                {{ error }}
+                            </p>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <div>
+
+                        <label
+                            for="{{ form.password1.id_for_label }}"
+                            class="mb-2 block text-sm font-semibold text-slate-700"
+                        >
+                            Password
+                        </label>
+
+                        {{ form.password1 }}
+
+                        {% for error in form.password1.errors %}
+
+                            <p class="mt-2 text-sm text-red-600">
+                                {{ error }}
+                            </p>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <div>
+
+                        <label
+                            for="{{ form.password2.id_for_label }}"
+                            class="mb-2 block text-sm font-semibold text-slate-700"
+                        >
+                            Confirm password
+                        </label>
+
+                        {{ form.password2 }}
+
+                        {% for error in form.password2.errors %}
+
+                            <p class="mt-2 text-sm text-red-600">
+                                {{ error }}
+                            </p>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+
+                <div class="mt-8 rounded-xl border border-blue-100 bg-blue-50 p-4">
+
+                    <div class="flex gap-3">
+
+                        <svg
+                            class="mt-0.5 h-5 w-5 flex-shrink-0 text-blue-600"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M13 16h-1v-4h-1m1-4h.01M12 22a10 10 0 100-20 10 10 0 000 20z"
+                            />
+                        </svg>
+
+                        <div>
+
+                            <p class="text-sm font-semibold text-blue-900">
+                                Account Security
+                            </p>
+
+                            <p class="mt-1 text-sm leading-6 text-blue-700">
+                                Use a strong password and never share your
+                                account credentials with anyone.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
+
+                    <a
+                        href="{% url 'login' %}"
+                        class="inline-flex items-center justify-center rounded-xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-slate-900"
+                    >
+                        Back to login
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700 hover:shadow-blue-600/30 focus:outline-none focus:ring-4 focus:ring-blue-600/20"
+                    >
+
+                        Create account
+
+                        <svg
+                            class="h-4 w-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M5 12h14M13 6l6 6-6 6"
+                            />
+                        </svg>
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <p class="mt-6 text-center text-xs text-slate-400">
+            © {% now "Y" %} System. All rights reserved.
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}
