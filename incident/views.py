@@ -20,27 +20,7 @@ from .forms import (
     ActionInjuryForm,
 )
 
-
-# ============================================================
-# PERMISSION HELPERS
-# ============================================================
-
-def can_manage_injury(user, injury):
-
-    return (
-        user.is_superuser
-        or injury.reported_by == user
-        or injury.responsible == user
-    )
-
-
-def can_manage_action(user, injury):
-
-    return (
-        user.is_superuser
-        or injury.reported_by == user
-        or injury.responsible == user
-    )
+from incident.management import can_manage_injury, can_manage_action
 
 
 # ============================================================
@@ -64,8 +44,27 @@ def injury_list(request):
         .order_by("-date_incident")
     )
 
+    actions = (
+        ActionInjury.objects
+        .select_related(
+            "injury",
+            "responsible",
+        )
+        .order_by("limit_date_action")
+    )
+
+    count_total = injuries.count()
+    count_open = injuries.filter(status="OPE").count()
+    count_closed = injuries.filter(status="CLO").count()
+    count_actions = actions.count()
+
     context = {
         "injuries": injuries,
+        "actions": actions,
+        "count_total": count_total,
+        "count_open": count_open,
+        "count_closed": count_closed,
+        "count_actions": count_actions,
     }
 
     return render(
@@ -73,7 +72,6 @@ def injury_list(request):
         "injury/injury_list.html",
         context,
     )
-
 
 # ============================================================
 # INJURY DETAIL

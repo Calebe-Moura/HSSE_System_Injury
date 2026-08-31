@@ -1,0 +1,660 @@
+{% extends "master.html" %}
+
+{% block title %}{{ injury.cod_sys }} - Incident{% endblock %}
+
+{% block content %}
+
+<div class="min-h-screen bg-slate-50">
+
+    <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+
+        <!-- Header -->
+        <div class="mb-8">
+
+            <a
+                href="{% url 'injury_list' %}"
+                class="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-blue-600"
+            >
+                <svg
+                    class="h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 19l-7-7 7-7"
+                    />
+                </svg>
+
+                Back to Incidents
+            </a>
+
+
+            <div class="mt-5 flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+
+                <div>
+
+                    <div class="flex flex-wrap items-center gap-3">
+
+                        <span class="font-mono text-sm font-bold text-blue-600">
+                            {{ injury.cod_sys }}
+                        </span>
+
+
+                        {% if injury.status == "OPE" %}
+
+                            <span class="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700">
+                                Open
+                            </span>
+
+                        {% elif injury.status == "CLO" %}
+
+                            <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+                                Closed
+                            </span>
+
+                        {% else %}
+
+                            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
+                                {{ injury.get_status_display }}
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <h1 class="mt-2 text-3xl font-bold tracking-tight text-slate-900">
+                        {{ injury.title }}
+                    </h1>
+
+
+                    <p class="mt-2 text-sm text-slate-500">
+                        {{ injury.unit }} · {{ injury.date_incident|date:"M d, Y H:i" }}
+                    </p>
+
+                </div>
+
+
+                {% if can_manage %}
+
+                    <div class="flex flex-wrap gap-2">
+
+                        {% if injury.is_open %}
+
+                            <a
+                                href="{% url 'injury_update' injury.id %}"
+                                class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50"
+                            >
+                                Edit
+                            </a>
+
+                            <form
+                                method="POST"
+                                action="{% url 'closed_report' injury.id %}"
+                            >
+
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700"
+                                >
+                                    Close Incident
+                                </button>
+
+                            </form>
+
+                        {% endif %}
+
+
+                        <a
+                            href="{% url 'injury_delete' injury.id %}"
+                            class="inline-flex items-center gap-2 rounded-xl border border-red-200 bg-white px-4 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                        >
+                            Delete
+                        </a>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- Overview -->
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+
+
+            <div class="lg:col-span-2">
+
+                <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+
+                    <div class="border-b border-slate-100 px-6 py-5">
+
+                        <h2 class="text-lg font-bold text-slate-900">
+                            Incident Overview
+                        </h2>
+
+                    </div>
+
+
+                    <div class="grid grid-cols-1 gap-6 p-6 sm:grid-cols-2">
+
+
+                        <div>
+
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                Description
+                            </p>
+
+                            <p class="mt-2 whitespace-pre-line text-sm leading-6 text-slate-700">
+                                {{ injury.description|default:"No description provided." }}
+                            </p>
+
+                        </div>
+
+
+                        <div>
+
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                Underlying Causes
+                            </p>
+
+                            <p class="mt-2 whitespace-pre-line text-sm leading-6 text-slate-700">
+                                {{ injury.underlying_causes|default:"No underlying causes provided." }}
+                            </p>
+
+                        </div>
+
+
+                        <div>
+
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                Location
+                            </p>
+
+                            <p class="mt-2 text-sm font-medium text-slate-800">
+                                {{ injury.get_location_incident_display }}
+                            </p>
+
+                        </div>
+
+
+                        <div>
+
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                Incident Type
+                            </p>
+
+                            <p class="mt-2 text-sm font-medium text-slate-800">
+                                {{ injury.get_type_incident_display }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Classification -->
+                <section class="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+
+                    <div class="border-b border-slate-100 px-6 py-5">
+
+                        <h2 class="text-lg font-bold text-slate-900">
+                            Classification
+                        </h2>
+
+                    </div>
+
+
+                    <div class="grid grid-cols-1 gap-6 p-6 sm:grid-cols-2">
+
+
+                        <div>
+
+                            <p class="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                Accident Types
+                            </p>
+
+                            <div class="flex flex-wrap gap-2">
+
+                                {% for accident in injury.accident_types.all %}
+
+                                    <span class="rounded-lg bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700">
+                                        {{ accident.name }}
+                                    </span>
+
+                                {% empty %}
+
+                                    <span class="text-sm text-slate-400">
+                                        No accident type registered.
+                                    </span>
+
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+
+                        <div>
+
+                            <p class="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                Injury Types
+                            </p>
+
+                            <div class="flex flex-wrap gap-2">
+
+                                {% for injury_type in injury.injury_types.all %}
+
+                                    <span class="rounded-lg bg-purple-50 px-3 py-2 text-xs font-semibold text-purple-700">
+                                        {{ injury_type.name }}
+                                    </span>
+
+                                {% empty %}
+
+                                    <span class="text-sm text-slate-400">
+                                        No injury type registered.
+                                    </span>
+
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Actions -->
+                <section class="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+
+                    <div class="flex flex-col gap-3 border-b border-slate-100 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+
+                        <div>
+
+                            <h2 class="text-lg font-bold text-slate-900">
+                                Corrective Actions
+                            </h2>
+
+                            <p class="mt-1 text-sm text-slate-500">
+                                Actions associated with this incident.
+                            </p>
+
+                        </div>
+
+
+                        {% if can_manage and injury.is_open %}
+
+                            <a
+                                href="{% url 'action_create' injury.id %}"
+                                class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700"
+                            >
+                                <svg
+                                    class="h-4 w-4"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M12 4v16m8-8H4"
+                                    />
+                                </svg>
+
+                                Add Action
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="divide-y divide-slate-100">
+
+                        {% for action in injury.actions.all %}
+
+                            <div class="p-6">
+
+                                <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+
+                                    <div class="min-w-0">
+
+                                        <h3 class="text-sm font-bold text-slate-900">
+                                            {{ action.task }}
+                                        </h3>
+
+                                        <p class="mt-2 whitespace-pre-line text-sm leading-6 text-slate-600">
+                                            {{ action.description }}
+                                        </p>
+
+                                    </div>
+
+
+                                    <div class="flex shrink-0 items-center gap-2">
+
+                                        {% if action.status == "COM" %}
+
+                                            <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+                                                Completed
+                                            </span>
+
+                                        {% elif action.status == "ACT" %}
+
+                                            <span class="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
+                                                Active
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
+                                                {{ action.get_status_display }}
+                                            </span>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
+
+                                    <div>
+
+                                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                            Responsible
+                                        </p>
+
+                                        <p class="mt-1 text-sm text-slate-700">
+
+                                            {% if action.responsible %}
+
+                                                {{ action.responsible.get_full_name|default:action.responsible.username }}
+
+                                            {% else %}
+
+                                                —
+
+                                            {% endif %}
+
+                                        </p>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                            Due Date
+                                        </p>
+
+                                        <p class="mt-1 text-sm text-slate-700">
+                                            {{ action.limit_date_action|date:"M d, Y H:i"|default:"—" }}
+                                        </p>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                            Completed
+                                        </p>
+
+                                        <p class="mt-1 text-sm text-slate-700">
+                                            {{ action.completed_date_action|date:"M d, Y H:i"|default:"—" }}
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+
+                                {% if can_manage and injury.is_open %}
+
+                                    <div class="mt-5 flex flex-wrap gap-2">
+
+                                        {% if action.status == "ACT" %}
+
+                                            <a
+                                                href="{% url 'action_update' injury.id action.id %}"
+                                                class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50"
+                                            >
+                                                Edit
+                                            </a>
+
+
+                                            <form
+                                                method="POST"
+                                                action="{% url 'closed_action' injury.id action.id %}"
+                                            >
+
+                                                {% csrf_token %}
+
+                                                <button
+                                                    type="submit"
+                                                    class="rounded-lg bg-emerald-600 px-3 py-2 text-xs font-semibold text-white hover:bg-emerald-700"
+                                                >
+                                                    Complete
+                                                </button>
+
+                                            </form>
+
+
+                                            <a
+                                                href="{% url 'action_delete' injury.id action.id %}"
+                                                class="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-50"
+                                            >
+                                                Delete
+                                            </a>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+                        {% empty %}
+
+                            <div class="px-6 py-12 text-center">
+
+                                <p class="text-sm font-medium text-slate-500">
+                                    No corrective actions registered.
+                                </p>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+            <!-- Side Information -->
+            <div class="space-y-6">
+
+
+                <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+
+                    <div class="border-b border-slate-100 px-6 py-5">
+
+                        <h2 class="text-lg font-bold text-slate-900">
+                            People
+                        </h2>
+
+                    </div>
+
+
+                    <div class="space-y-5 p-6">
+
+                        <div>
+
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                Reported By
+                            </p>
+
+                            <p class="mt-2 text-sm font-medium text-slate-800">
+
+                                {% if injury.reported_by %}
+
+                                    {{ injury.reported_by.get_full_name|default:injury.reported_by.username }}
+
+                                {% else %}
+
+                                    —
+
+                                {% endif %}
+
+                            </p>
+
+                        </div>
+
+
+                        <div>
+
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                Responsible
+                            </p>
+
+                            <p class="mt-2 text-sm font-medium text-slate-800">
+
+                                {% if injury.responsible %}
+
+                                    {{ injury.responsible.get_full_name|default:injury.responsible.username }}
+
+                                {% else %}
+
+                                    —
+
+                                {% endif %}
+
+                            </p>
+
+                        </div>
+
+
+                        <div>
+
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                Injured Person
+                            </p>
+
+                            <p class="mt-2 text-sm font-medium text-slate-800">
+                                {{ injury.injured_person_name|default:"—" }}
+                            </p>
+
+                        </div>
+
+
+                        <div>
+
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                Employer
+                            </p>
+
+                            <p class="mt-2 text-sm font-medium text-slate-800">
+                                {{ injury.employer|default:"—" }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+
+                    <div class="border-b border-slate-100 px-6 py-5">
+
+                        <h2 class="text-lg font-bold text-slate-900">
+                            Injury Information
+                        </h2>
+
+                    </div>
+
+
+                    <div class="space-y-5 p-6">
+
+                        <div>
+
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                Body Part
+                            </p>
+
+                            <p class="mt-2 text-sm text-slate-700">
+                                {{ injury.get_bodypart_injured_display|default:"—" }}
+                            </p>
+
+                        </div>
+
+
+                        <div>
+
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                Condition
+                            </p>
+
+                            <p class="mt-2 whitespace-pre-line text-sm leading-6 text-slate-700">
+                                {{ injury.condition_injured|default:"—" }}
+                            </p>
+
+                        </div>
+
+
+                        <div>
+
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                Work Days Lost
+                            </p>
+
+                            <p class="mt-2 text-2xl font-bold text-slate-900">
+                                {{ injury.work_days_lost|default:"0" }}
+                            </p>
+
+                        </div>
+
+
+                        <div>
+
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                Potential Risk
+                            </p>
+
+                            <p class="mt-2 text-sm font-semibold text-slate-700">
+                                {{ injury.get_risk_potencial_display|default:"—" }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+{% endblock %}

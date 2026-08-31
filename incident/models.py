@@ -380,6 +380,16 @@ class ActionInjury(models.Model):
     updated_at = models.DateTimeField(
         auto_now=True,
     )
+    
+    @property
+    def is_overdue(self):
+        if not self.limit_date_action:
+            return False
+
+        if self.status == "COM":
+            return False
+
+        return self.limit_date_action < timezone.now()
 
     class Meta:
         ordering = ["limit_date_action"]

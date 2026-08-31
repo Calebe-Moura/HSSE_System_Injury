@@ -10,18 +10,16 @@ class LoginRequiredMiddleware:
 
         # URLs que podem ser acessadas sem login
         login_not_required = [
-            '/login/',
-            '/register/',
+            'login',
+            'register',
         ]
 
-        # Se o usuário não estiver autenticado
+        # Se o usuário NÃO estiver autenticado
         if not request.user.is_authenticated:
 
-            # Se não estiver em uma URL pública
-            if request.path not in login_not_required:
+            # Se estiver tentando acessar uma página protegida
+            if request.path == "/" not in login_not_required:
                 return redirect('login')
-            else:
-                return redirect('start')
 
         # Continua normalmente
         response = self.get_response(request)

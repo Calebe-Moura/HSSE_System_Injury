@@ -32,19 +32,21 @@
 
                 <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 shadow-lg shadow-blue-600/20">
 
-                    <svg
-                        class="h-5 w-5 text-white"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M12 3L4 7v5c0 5.25 3.4 8.85 8 10 4.6-1.15 8-4.75 8-10V7l-8-4z"
-                        />
-                    </svg>
+
+                        <svg
+                            class="h-5 w-5 text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 3L4 7v5c0 5.25 3.4 8.85 8 10 4.6-1.15 8-4.75 8-10V7l-8-4z"
+                            />
+                        </svg>
+
 
                 </div>
 
@@ -55,6 +57,16 @@
                     </h1>
 
                 </div>
+                <div></div>
+
+                <div>
+                    <a href="{% url 'start' %}">Home</a>
+                </div>
+
+                <div>
+                    <a href="{% url 'injury_list' %}">Incident Injury</a>
+                </div>
+
 
             </div>
 
@@ -250,7 +262,7 @@
                         <!-- All Profile Management -->
 
                         <a
-                            href="{% url 'user_list' %}"
+                            href="{% url 'list_user' %}"
                             class="group flex items-center gap-3 rounded-xl px-3 py-3 transition hover:bg-slate-50"
                             role="menuitem"
                         >

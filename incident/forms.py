@@ -8,28 +8,27 @@ from .models import (
     TYPE_INJURY_CHOICES,
 )
 
+TAILWIND_INPUT = (
+    "w-full rounded-xl border border-slate-200 bg-white "
+    "px-4 py-3 text-sm text-slate-900 outline-none transition "
+    "placeholder:text-slate-400 "
+    "focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+)
 
-# ============================================================
-# HELPERS
-# ============================================================
+TAILWIND_SELECT = (
+    "w-full rounded-xl border border-slate-200 bg-white "
+    "px-4 py-3 text-sm text-slate-900 outline-none transition "
+    "focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+)
 
-def bulma_class(field, css_class="input"):
+TAILWIND_TEXTAREA = (
+    "w-full rounded-xl border border-slate-200 bg-white "
+    "px-4 py-3 text-sm text-slate-900 outline-none transition "
+    "placeholder:text-slate-400 resize-y "
+    "focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+)
 
-    widget = field.widget
 
-    if isinstance(widget, forms.Select):
-        widget.attrs["class"] = "select"
-
-    elif isinstance(widget, forms.SelectMultiple):
-        widget.attrs["class"] = "select"
-
-    elif isinstance(widget, forms.CheckboxSelectMultiple):
-        widget.attrs["class"] = "checkbox"
-
-    else:
-        widget.attrs["class"] = css_class
-
-    return field
 
 
 # ============================================================
@@ -128,7 +127,7 @@ class InjuryForm(forms.ModelForm):
 
             "unit": forms.Select(
                 attrs={
-                    "class": "select",
+                    "class": TAILWIND_SELECT,
                 }
             ),
 
@@ -136,32 +135,32 @@ class InjuryForm(forms.ModelForm):
                 format="%Y-%m-%dT%H:%M",
                 attrs={
                     "type": "datetime-local",
-                    "class": "input",
+                    "class": TAILWIND_INPUT,
                 },
             ),
 
             "type_incident": forms.Select(
                 attrs={
-                    "class": "select",
+                    "class": TAILWIND_SELECT,
                 }
             ),
 
             "status": forms.Select(
                 attrs={
-                    "class": "select",
+                    "class": TAILWIND_SELECT,
                 }
             ),
 
             "title": forms.TextInput(
                 attrs={
-                    "class": "input",
+                    "class": TAILWIND_INPUT,
                     "placeholder": "Incident title",
                 }
             ),
 
             "description": forms.Textarea(
                 attrs={
-                    "class": "textarea",
+                    "class": TAILWIND_TEXTAREA,
                     "rows": 4,
                 }
             ),
@@ -170,58 +169,58 @@ class InjuryForm(forms.ModelForm):
                 format="%Y-%m-%dT%H:%M",
                 attrs={
                     "type": "datetime-local",
-                    "class": "input",
+                    "class": TAILWIND_INPUT,
                 },
             ),
 
             "underlying_causes": forms.Textarea(
                 attrs={
-                    "class": "textarea",
+                    "class": TAILWIND_TEXTAREA,
                     "rows": 4,
                 }
             ),
 
             "location_incident": forms.Select(
                 attrs={
-                    "class": "select",
+                    "class": TAILWIND_SELECT,
                 }
             ),
 
             "work_days_lost": forms.NumberInput(
                 attrs={
-                    "class": "input",
+                    "class": TAILWIND_INPUT,
                     "min": 0,
                 }
             ),
 
             "bodypart_injured": forms.Select(
                 attrs={
-                    "class": "select",
+                    "class": TAILWIND_SELECT,
                 }
             ),
 
             "employer": forms.TextInput(
                 attrs={
-                    "class": "input",
+                    "class": TAILWIND_INPUT,
                 }
             ),
 
             "injured_person_name": forms.TextInput(
                 attrs={
-                    "class": "input",
+                    "class": TAILWIND_INPUT,
                 }
             ),
 
             "condition_injured": forms.Textarea(
                 attrs={
-                    "class": "textarea",
+                    "class": TAILWIND_TEXTAREA,
                     "rows": 4,
                 }
             ),
 
             "risk_potencial": forms.Select(
                 attrs={
-                    "class": "select",
+                    "class": TAILWIND_SELECT,
                 }
             ),
         }
@@ -310,7 +309,7 @@ class ActionInjuryForm(forms.ModelForm):
                 format="%Y-%m-%dT%H:%M",
                 attrs={
                     "type": "datetime-local",
-                    "class": "input",
+                    "class": TAILWIND_INPUT,
                 },
             ),
 
@@ -318,13 +317,13 @@ class ActionInjuryForm(forms.ModelForm):
                 format="%Y-%m-%dT%H:%M",
                 attrs={
                     "type": "datetime-local",
-                    "class": "input",
+                    "class": TAILWIND_INPUT,
                 },
             ),
 
             "task": forms.Textarea(
                 attrs={
-                    "class": "textarea",
+                    "class": TAILWIND_SELECT,
                     "rows": 3,
                     "placeholder": "Action task",
                 }
@@ -332,7 +331,7 @@ class ActionInjuryForm(forms.ModelForm):
 
             "description": forms.Textarea(
                 attrs={
-                    "class": "textarea",
+                    "class": TAILWIND_SELECT,
                     "rows": 4,
                     "placeholder": "Action description",
                 }
@@ -340,7 +339,7 @@ class ActionInjuryForm(forms.ModelForm):
 
             "status": forms.Select(
                 attrs={
-                    "class": "select",
+                    "class": TAILWIND_SELECT,
                 }
             ),
         }

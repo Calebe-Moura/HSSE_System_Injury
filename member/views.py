@@ -1,8 +1,14 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import (
+    render,
+    redirect,
+    get_object_or_404,
+)
+
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
 
 from .forms import FormUser
+from .models import PhotoUser
 
 
 def list_user(request):
@@ -13,12 +19,22 @@ def list_user(request):
     if not request.user.is_superuser:
         return redirect("start")
 
-    users = User.objects.all().order_by("first_name", "last_name")
+    users = (
+        User.objects
+        .select_related("profile_photo")
+        .all()
+        .order_by(
+            "first_name",
+            "last_name",
+        )
+    )
 
     return render(
         request,
         "member/user_list.html",
-        {"users": users}
+        {
+            "users": users,
+        }
     )
 
 
@@ -28,14 +44,16 @@ def detail_user(request, user_id):
         return redirect("login")
 
     user = get_object_or_404(
-        User,
-        id=user_id
+        User.objects.select_related("profile_photo"),
+        id=user_id,
     )
 
     return render(
         request,
         "member/user_detail.html",
-        {"my_user": user}
+        {
+            "my_user": user,
+        }
     )
 
 
@@ -44,10 +62,18 @@ def my_user(request):
     if not request.user.is_authenticated:
         return redirect("login")
 
+    user = (
+        User.objects
+        .select_related("profile_photo")
+        .get(pk=request.user.pk)
+    )
+
     return render(
         request,
         "member/my_user_list.html",
-        {"my_user": request.user}
+        {
+            "my_user": user,
+        }
     )
 
 
@@ -62,7 +88,8 @@ def edit_my_user(request):
 
         form = FormUser(
             request.POST,
-            instance=user
+            request.FILES,
+            instance=user,
         )
 
         if form.is_valid():
@@ -74,13 +101,15 @@ def edit_my_user(request):
     else:
 
         form = FormUser(
-            instance=user
+            instance=user,
         )
 
     return render(
         request,
-        "member/edit_my_user.html",
-        {"form": form}
+        "member/my_user_edit.html",
+        {
+            "form": form,
+        }
     )
 
 
@@ -115,14 +144,15 @@ def edit_user(request, user_id):
 
     user = get_object_or_404(
         User,
-        id=user_id
+        id=user_id,
     )
 
     if request.method == "POST":
 
         form = FormUser(
             request.POST,
-            instance=user
+            request.FILES,
+            instance=user,
         )
 
         if form.is_valid():
@@ -134,13 +164,16 @@ def edit_user(request, user_id):
     else:
 
         form = FormUser(
-            instance=user
+            instance=user,
         )
 
     return render(
         request,
         "member/user_edit.html",
-        {"form": form}
+        {
+            "form": form,
+            "my_user": user,
+        }
     )
 
 
@@ -154,12 +187,13 @@ def remove_user(request, user_id):
 
     user = get_object_or_404(
         User,
-        id=user_id
+        id=user_id,
     )
 
     if request.method == "POST":
 
-        if user.id == request.user.id: # type: ignore
+        # Impede o administrador de apagar a própria conta
+        if user.id == request.user.id: # pyright: ignore[reportAttributeAccessIssue]
             return redirect("list_user")
 
         user.delete()
@@ -168,6 +202,8 @@ def remove_user(request, user_id):
 
     return render(
         request,
-        "member/user_list.html",
-        {"user": user}
+        "member/user_delete.html",
+        {
+            "user": user,
+        }
     )

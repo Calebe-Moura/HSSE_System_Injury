@@ -7,247 +7,252 @@
 
 <div class="min-h-screen bg-slate-100">
 
-    <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+```
+<main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
 
-        <div class="mb-8">
+    <!-- ================================================= -->
+    <!-- HEADER -->
+    <!-- ================================================= -->
 
-            <p class="text-sm font-medium text-blue-600">
-                {% now "l, F j, Y" %}
-            </p>
+    <div class="mb-8">
 
-            <h2 class="mt-1 text-3xl font-bold tracking-tight text-slate-900">
-                Welcome, {{ request.user.first_name|default:request.user.username }}
-            </h2>
+        <p class="text-sm font-medium text-blue-600">
+            {% now "l, F j, Y" %}
+        </p>
 
-            <p class="mt-2 text-slate-500">
-                Manage your reports, actions and safety information.
+        <h2 class="mt-1 text-3xl font-bold tracking-tight text-slate-900">
+            Welcome,
+            {{ request.user.first_name|default:request.user.username }}
+        </h2>
+
+        <p class="mt-2 text-slate-500">
+            Manage your reports, actions and safety information.
+        </p>
+
+    </div>
+
+    <hr class="mb-8 border-slate-200">
+
+
+    <!-- ================================================= -->
+    <!-- QUICK ACTIONS -->
+    <!-- ================================================= -->
+
+    <section class="mb-8">
+
+        <div class="mb-4">
+
+            <h3 class="text-lg font-bold text-slate-900">
+                Quick Actions
+            </h3>
+
+            <p class="mt-1 text-sm text-slate-500">
+                Access the most frequently used features.
             </p>
 
         </div>
-        <hr>
-        <section class="mb-8">
-
-            <div class="mb-4">
-
-                <h3 class="text-lg font-bold text-slate-900">
-                    Quick Actions
-                </h3>
-
-                <p class="mt-1 text-sm text-slate-500">
-                    Access the most frequently used features.
-                </p>
-
-            </div>
 
 
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 
 
-                <a
-                    href="{% url 'injury_create' %}"
-                    class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-lg"
-                >
+            <!-- NEW REPORT -->
 
-                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 transition group-hover:bg-blue-600">
+            <a
+                href="{% url 'injury_create' %}"
+                class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition duration-200 hover:-translate-y-1 hover:border-blue-200 hover:shadow-lg"
+            >
 
-                        <svg
-                            class="h-6 w-6 text-blue-600 transition group-hover:text-white"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M12 4v16m8-8H4"
-                            />
-                        </svg>
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 transition group-hover:bg-blue-600">
 
-                    </div>
-
-                    <h4 class="mt-5 font-bold text-slate-900">
-                        New Report
-                    </h4>
-
-                    <p class="mt-2 text-sm leading-6 text-slate-500">
-                        Create and submit a new safety report.
-                    </p>
-
-                    <div class="mt-4 flex items-center gap-2 text-sm font-semibold text-blue-600">
-                        Create report
-
-                        <svg
-                            class="h-4 w-4 transition group-hover:translate-x-1"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M5 12h14m-6-6l6 6-6 6"
-                            />
-                        </svg>
-
-                    </div>
-
-                </a>
-
-
-                <a
-                    href="{% url 'injury_list' %}"
-                    class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-indigo-200 hover:shadow-lg"
-                >
-
-                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 transition group-hover:bg-indigo-600">
-
-                        <svg
-                            class="h-6 w-6 text-indigo-600 transition group-hover:text-white"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h6l5 5v11a2 2 0 01-2 2z"
-                            />
-                        </svg>
-
-                    </div>
-
-                    <h4 class="mt-5 font-bold text-slate-900">
-                        View Reports
-                    </h4>
-
-                    <p class="mt-2 text-sm leading-6 text-slate-500">
-                        Review, filter and manage submitted reports.
-                    </p>
-
-                    <div class="mt-4 flex items-center gap-2 text-sm font-semibold text-indigo-600">
-
-                        View reports
-
-                        <svg
-                            class="h-4 w-4 transition group-hover:translate-x-1"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M5 12h14m-6-6l6 6-6 6"
-                            />
-                        </svg>
-
-                    </div>
-
-                </a>
-
-
-                {% if request.user.is_superuser %}
-
-                <a
-                    href="{% url 'user_list' %}"
-                    class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-emerald-200 hover:shadow-lg"
-                >
-
-                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 transition group-hover:bg-emerald-600">
-
-                        <svg
-                            class="h-6 w-6 text-emerald-600 transition group-hover:text-white"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M17 20h5v-2a3 3 0 00-5.36-1.86M17 20H7m10 0v-2c0-.73-.2-1.41-.54-2M7 20H2v-2a3 3 0 015.36-1.86M7 20v-2c0-.73.2-1.41.54-2M15 7a3 3 0 11-6 0 3 3 0 016 0z"
-                            />
-                        </svg>
-
-                    </div>
-
-                    <h4 class="mt-5 font-bold text-slate-900">
-                        User Management
-                    </h4>
-
-                    <p class="mt-2 text-sm leading-6 text-slate-500">
-                        Manage users, accounts and system access.
-                    </p>
-
-                    <div class="mt-4 flex items-center gap-2 text-sm font-semibold text-emerald-600">
-
-                        Manage users
-
-                        <svg
-                            class="h-4 w-4 transition group-hover:translate-x-1"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M5 12h14m-6-6l6 6-6 6"
-                            />
-                        </svg>
-
-                    </div>
-
-                </a>
-
-                {% endif %}
-
-            </div>
-
-        </section>
-
-
-        <section>
-
-            <div class="rounded-2xl border border-slate-200 bg-white shadow-sm">
-
-                <div class="flex items-center justify-between border-b border-slate-100 px-6 py-5">
-
-                    <div>
-
-                        <h3 class="font-bold text-slate-900">
-                            Recent Reports
-                        </h3>
-
-                        <p class="mt-1 text-sm text-slate-500">
-                            Latest activity in the system.
-                        </p>
-
-                    </div>
-
-                    <a
-                        href="#"
-                        class="text-sm font-semibold text-blue-600 hover:text-blue-700"
+                    <svg
+                        class="h-6 w-6 text-blue-600 transition group-hover:text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
                     >
-                        View all
-                    </a>
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 4v16m8-8H4"
+                        />
+                    </svg>
 
                 </div>
 
+                <h4 class="mt-5 font-bold text-slate-900">
+                    New Report
+                </h4>
 
-                <div class="flex min-h-48 items-center justify-center px-6 py-10">
+                <p class="mt-2 text-sm leading-6 text-slate-500">
+                    Create and submit a new safety report.
+                </p>
 
-                    <div class="text-center">
+                <div class="mt-4 flex items-center gap-2 text-sm font-semibold text-blue-600">
 
-                        <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-100">
+                    Create report
+
+                    <svg
+                        class="h-4 w-4 transition group-hover:translate-x-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M5 12h14m-6-6l6 6-6 6"
+                        />
+                    </svg>
+
+                </div>
+
+            </a>
+
+
+            <!-- VIEW REPORTS -->
+
+            <a
+                href="{% url 'injury_list' %}"
+                class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition duration-200 hover:-translate-y-1 hover:border-indigo-200 hover:shadow-lg"
+            >
+
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 transition group-hover:bg-indigo-600">
+
+                    <svg
+                        class="h-6 w-6 text-indigo-600 transition group-hover:text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h6l5 5v11a2 2 0 01-2 2z"
+                        />
+                    </svg>
+
+                </div>
+
+                <h4 class="mt-5 font-bold text-slate-900">
+                    View Reports
+                </h4>
+
+                <p class="mt-2 text-sm leading-6 text-slate-500">
+                    Review, filter and manage submitted reports.
+                </p>
+
+                <div class="mt-4 flex items-center gap-2 text-sm font-semibold text-indigo-600">
+
+                    View reports
+
+                    <svg
+                        class="h-4 w-4 transition group-hover:translate-x-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M5 12h14m-6-6l6 6-6 6"
+                        />
+                    </svg>
+
+                </div>
+
+            </a>
+
+
+            <!-- USER MANAGEMENT -->
+
+            {% if request.user.is_superuser %}
+
+            <a
+                href="{% url 'list_user' %}"
+                class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition duration-200 hover:-translate-y-1 hover:border-emerald-200 hover:shadow-lg"
+            >
+
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 transition group-hover:bg-emerald-600">
+
+                    <svg
+                        class="h-6 w-6 text-emerald-600 transition group-hover:text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M17 20h5v-2a3 3 0 00-5.36-1.86M17 20H7m10 0v-2c0-.73-.2-1.41-.54-2M7 20H2v-2a3 3 0 015.36-1.86M7 20v-2c0-.73.2-1.41.54-2M15 7a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                    </svg>
+
+                </div>
+
+                <h4 class="mt-5 font-bold text-slate-900">
+                    User Management
+                </h4>
+
+                <p class="mt-2 text-sm leading-6 text-slate-500">
+                    Manage users, accounts and system access.
+                </p>
+
+                <div class="mt-4 flex items-center gap-2 text-sm font-semibold text-emerald-600">
+
+                    Manage users
+
+                    <svg
+                        class="h-4 w-4 transition group-hover:translate-x-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M5 12h14m-6-6l6 6-6 6"
+                        />
+                    </svg>
+
+                </div>
+
+            </a>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- MY REPORTS -->
+    <!-- ================================================= -->
+
+    <section class="mb-8">
+
+        <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+
+
+            <!-- SECTION HEADER -->
+
+            <div class="flex flex-col gap-3 border-b border-slate-100 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+
+                <div>
+
+                    <div class="flex items-center gap-3">
+
+                        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50">
 
                             <svg
-                                class="h-7 w-7 text-slate-400"
+                                class="h-5 w-5 text-blue-600"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -262,45 +267,708 @@
 
                         </div>
 
-                        <h4 class="mt-4 font-semibold text-slate-700">
-                            No reports yet
-                        </h4>
+                        <div>
 
-                        <p class="mt-1 text-sm text-slate-400">
-                            Reports created in the system will appear here.
-                        </p>
+                            <h3 class="font-bold text-slate-900">
+                                My Reports
+                            </h3>
+
+                            <p class="mt-1 text-sm text-slate-500">
+                                Reports submitted by you.
+                            </p>
+
+                        </div>
 
                     </div>
 
                 </div>
 
+
+                <div class="flex items-center gap-2">
+
+                    <span class="rounded-lg bg-blue-50 px-3 py-1.5 text-sm font-bold text-blue-600">
+                        {{ my_report|length }}
+                    </span>
+
+                    <span class="text-sm text-slate-400">
+                        report{{ my_report|length|pluralize }}
+                    </span>
+
+                </div>
+
             </div>
 
-        </section>
 
-    </main>
+            <!-- TABLE -->
+
+            {% if my_report %}
+
+            <div class="overflow-x-auto">
+
+                <table class="w-full min-w-[900px] text-left">
+
+                    <thead class="border-b border-slate-100 bg-slate-50">
+
+                        <tr>
+
+                            <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Report
+                            </th>
+
+                            <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Title
+                            </th>
+
+                            <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Incident Date
+                            </th>
+
+                            <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Responsible
+                            </th>
+
+                            <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Status
+                            </th>
+
+                            <th class="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
 
 
-    <footer class="border-t border-slate-200 bg-white">
+                    <tbody class="divide-y divide-slate-100">
 
-        <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-slate-400 sm:flex-row sm:px-6 lg:px-8">
+                        {% for report in my_report %}
 
-            <span>
-                © {% now "Y" %} Report System
-            </span>
+                        <tr class="transition hover:bg-slate-50">
 
-            <span>
-                HSEQ Management Platform
-            </span>
+
+                            <!-- REPORT -->
+
+                            <td class="whitespace-nowrap px-6 py-4">
+
+                                <span class="font-semibold text-slate-900">
+                                    {{ report.cod_sys }}
+                                </span>
+
+                            </td>
+
+
+                            <!-- TITLE -->
+
+                            <td class="max-w-xs px-6 py-4">
+
+                                <p class="truncate font-medium text-slate-800">
+                                    {{ report.title|default:"Untitled report" }}
+                                </p>
+
+                                {% if report.type_incident %}
+
+                                <p class="mt-1 truncate text-xs text-slate-400">
+                                    {{ report.get_type_incident_display|default:report.type_incident }}
+                                </p>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- DATE -->
+
+                            <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-600">
+
+                                {% if report.date_incident %}
+
+                                    {{ report.date_incident|date:"M d, Y H:i" }}
+
+                                {% else %}
+
+                                    —
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- RESPONSIBLE -->
+
+                            <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-600">
+
+                                {% if report.responsible %}
+
+                                    {{ report.responsible.get_full_name|default:report.responsible.username }}
+
+                                {% else %}
+
+                                    <span class="text-slate-400">
+                                        Not assigned
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- STATUS -->
+
+                            <td class="whitespace-nowrap px-6 py-4">
+
+                                {% if report.status == "OPE" %}
+
+                                    <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
+
+                                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+
+                                        Open
+
+                                    </span>
+
+                                {% elif report.status == "CLO" %}
+
+                                    <span class="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
+
+                                        <span class="h-1.5 w-1.5 rounded-full bg-slate-400"></span>
+
+                                        Closed
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="inline-flex items-center rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700">
+                                        {{ report.get_status_display }}
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- ACTION -->
+
+                            <td class="whitespace-nowrap px-6 py-4 text-right">
+
+                                <a
+                                    href="{% url 'injury_detail' report.pk %}"
+                                    class="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
+                                >
+
+                                    View
+
+                                    <svg
+                                        class="h-3.5 w-3.5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M9 5l7 7-7 7"
+                                        />
+                                    </svg>
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- TABLE FOOTER -->
+
+            <div class="border-t border-slate-100 bg-slate-50 px-6 py-3">
+
+                <a
+                    href="{% url 'injury_list' %}"
+                    class="text-sm font-semibold text-blue-600 transition hover:text-blue-700"
+                >
+                    View all reports →
+                </a>
+
+            </div>
+
+            {% else %}
+
+
+            <!-- EMPTY STATE -->
+
+            <div class="flex min-h-52 items-center justify-center px-6 py-10">
+
+                <div class="text-center">
+
+                    <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-100">
+
+                        <svg
+                            class="h-7 w-7 text-slate-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h6l5 5v11a2 2 0 01-2 2z"
+                            />
+                        </svg>
+
+                    </div>
+
+                    <h4 class="mt-4 font-semibold text-slate-700">
+                        No reports yet
+                    </h4>
+
+                    <p class="mt-1 text-sm text-slate-400">
+                        Reports created by you will appear here.
+                    </p>
+
+                    <a
+                        href="{% url 'injury_create' %}"
+                        class="mt-4 inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
+                    >
+                        Create your first report
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% endif %}
 
         </div>
 
-    </footer>
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- MY ACTIONS -->
+    <!-- ================================================= -->
+
+    <section class="mb-8">
+
+        <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+
+
+            <!-- SECTION HEADER -->
+
+            <div class="flex flex-col gap-3 border-b border-slate-100 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+
+                <div>
+
+                    <div class="flex items-center gap-3">
+
+                        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-50">
+
+                            <svg
+                                class="h-5 w-5 text-indigo-600"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                                />
+                            </svg>
+
+                        </div>
+
+                        <div>
+
+                            <h3 class="font-bold text-slate-900">
+                                My Actions
+                            </h3>
+
+                            <p class="mt-1 text-sm text-slate-500">
+                                Actions assigned to you.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="flex items-center gap-2">
+
+                    <span class="rounded-lg bg-indigo-50 px-3 py-1.5 text-sm font-bold text-indigo-600">
+                        {{ my_action|length }}
+                    </span>
+
+                    <span class="text-sm text-slate-400">
+                        action{{ my_action|length|pluralize }}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            {% if my_action %}
+
+
+            <!-- ACTION TABLE -->
+
+            <div class="overflow-x-auto">
+
+                <table class="w-full min-w-[1000px] text-left">
+
+                    <thead class="border-b border-slate-100 bg-slate-50">
+
+                        <tr>
+
+                            <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Report
+                            </th>
+
+                            <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Task
+                            </th>
+
+                            <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Due Date
+                            </th>
+
+                            <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Completed
+                            </th>
+
+                            <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Status
+                            </th>
+
+                            <th class="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody class="divide-y divide-slate-100">
+
+
+                        {% for action in my_action %}
+
+                        <tr
+                            class="
+                                transition
+                                {% if action.is_overdue %}
+                                    bg-red-50/40 hover:bg-red-50
+                                {% else %}
+                                    hover:bg-slate-50
+                                {% endif %}
+                            "
+                        >
+
+
+                            <!-- REPORT -->
+
+                            <td class="whitespace-nowrap px-6 py-4">
+
+                                {% if action.injury %}
+
+                                <a
+                                    href="{% url 'injury_detail' action.injury.pk %}"
+                                    class="font-semibold text-blue-600 transition hover:text-blue-700"
+                                >
+                                    {{ action.injury.cod_sys }}
+                                </a>
+
+                                {% else %}
+
+                                <span class="text-slate-400">
+                                    —
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- TASK -->
+
+                            <td class="max-w-sm px-6 py-4">
+
+                                <p
+                                    class="
+                                        truncate
+                                        font-medium
+                                        {% if action.is_overdue %}
+                                            text-red-800
+                                        {% else %}
+                                            text-slate-800
+                                        {% endif %}
+                                    "
+                                >
+                                    {{ action.task|default:"No task description" }}
+                                </p>
+
+                                {% if action.description %}
+
+                                <p class="mt-1 truncate text-xs text-slate-400">
+                                    {{ action.description }}
+                                </p>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- DUE DATE -->
+
+                            <td class="whitespace-nowrap px-6 py-4 text-sm">
+
+                                {% if action.limit_date_action %}
+
+                                    {% if action.is_overdue %}
+
+                                        <div class="flex items-center gap-2">
+
+                                            <span class="h-2 w-2 rounded-full bg-red-500"></span>
+
+                                            <div>
+
+                                                <p class="font-semibold text-red-600">
+                                                    {{ action.limit_date_action|date:"M d, Y H:i" }}
+                                                </p>
+
+                                                <p class="text-xs font-medium text-red-500">
+                                                    Overdue
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+                                    {% else %}
+
+                                        <div class="flex items-center gap-2">
+
+                                            <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+
+                                            <span class="text-slate-600">
+                                                {{ action.limit_date_action|date:"M d, Y H:i" }}
+                                            </span>
+
+                                        </div>
+
+                                    {% endif %}
+
+                                {% else %}
+
+                                    <span class="text-slate-400">
+                                        No deadline
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- COMPLETED DATE -->
+
+                            <td class="whitespace-nowrap px-6 py-4 text-sm">
+
+                                {% if action.completed_date_action %}
+
+                                    <span class="text-slate-600">
+                                        {{ action.completed_date_action|date:"M d, Y H:i" }}
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="text-slate-400">
+                                        —
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- STATUS -->
+
+                            <td class="whitespace-nowrap px-6 py-4">
+
+                                {% if action.status == "ACT" %}
+
+                                    {% if action.is_overdue %}
+
+                                        <span class="inline-flex items-center gap-1.5 rounded-full bg-red-100 px-2.5 py-1 text-xs font-semibold text-red-700">
+
+                                            <span class="h-1.5 w-1.5 rounded-full bg-red-500"></span>
+
+                                            Overdue
+
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700">
+
+                                            <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+
+                                            Active
+
+                                        </span>
+
+                                    {% endif %}
+
+                                {% elif action.status == "COM" %}
+
+                                    <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
+
+                                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+
+                                        Completed
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
+                                        {{ action.get_status_display }}
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- ACTION -->
+
+                            <td class="whitespace-nowrap px-6 py-4 text-right">
+
+                                {% if action.injury %}
+
+                                <a
+                                    href="{% url 'injury_detail' action.injury.pk %}"
+                                    class="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 transition hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-600"
+                                >
+
+                                    View
+
+                                    <svg
+                                        class="h-3.5 w-3.5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M9 5l7 7-7 7"
+                                        />
+                                    </svg>
+
+                                </a>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            {% else %}
+
+
+            <!-- EMPTY STATE -->
+
+            <div class="flex min-h-52 items-center justify-center px-6 py-10">
+
+                <div class="text-center">
+
+                    <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-100">
+
+                        <svg
+                            class="h-7 w-7 text-slate-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h6l5 5v11a2 2 0 01-2 2z"
+                            />
+                        </svg>
+
+                    </div>
+
+                    <h4 class="mt-4 font-semibold text-slate-700">
+                        No actions yet
+                    </h4>
+
+                    <p class="mt-1 text-sm text-slate-400">
+                        Actions assigned to you will appear here.
+                    </p>
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ================================================= -->
+<!-- FOOTER -->
+<!-- ================================================= -->
+
+<footer class="border-t border-slate-200 bg-white">
+
+    <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-slate-400 sm:flex-row sm:px-6 lg:px-8">
+
+        <span>
+            © {% now "Y" %} Report System
+        </span>
+
+        <span>
+            HSEQ Management Platform
+        </span>
+
+    </div>
+
+</footer>
 
 </div>
 
 {% endblock %}
-
 
 {% block extra_scripts %}
 

@@ -3,7 +3,7 @@ from account import views
 
 urlpatterns = [
     path(
-        "login/",
+        "login",
         views.login_user,
         name="login"
     ),

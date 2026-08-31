@@ -1,8 +1,24 @@
 from django import forms
 from django.contrib.auth.models import User
 
+from .models import PhotoUser
+
 
 class FormUser(forms.ModelForm):
+
+    photo = forms.ImageField(
+        required=False,
+        label="Profile Photo",
+        widget=forms.ClearableFileInput(
+            attrs={
+                "class": "block w-full text-sm text-slate-600 "
+                         "file:mr-4 file:rounded-lg file:border-0 "
+                         "file:bg-blue-50 file:px-4 file:py-2 "
+                         "file:text-sm file:font-semibold "
+                         "file:text-blue-700 hover:file:bg-blue-100"
+            }
+        ),
+    )
 
     password1 = forms.CharField(
         label="Password",
@@ -45,18 +61,21 @@ class FormUser(forms.ModelForm):
                     "placeholder": "First name",
                 }
             ),
+
             "last_name": forms.TextInput(
                 attrs={
                     "class": "input",
                     "placeholder": "Last name",
                 }
             ),
+
             "username": forms.TextInput(
                 attrs={
                     "class": "input",
                     "placeholder": "Username",
                 }
             ),
+
             "email": forms.EmailInput(
                 attrs={
                     "class": "input",
@@ -65,13 +84,18 @@ class FormUser(forms.ModelForm):
             ),
         }
 
-    def clean(self):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
+        self.fields["photo"].initial = None
+
+    def clean(self):
         cleaned_data = super().clean()
 
         password1 = cleaned_data.get("password1")
         password2 = cleaned_data.get("password2")
 
+        # Criação de usuário
         if not self.instance.pk:
 
             if not password1:
@@ -86,6 +110,7 @@ class FormUser(forms.ModelForm):
                     "A confirmação da senha é obrigatória."
                 )
 
+        # Alteração de senha
         if password1 or password2:
 
             if password1 != password2:
@@ -111,5 +136,15 @@ class FormUser(forms.ModelForm):
 
         if commit:
             user.save()
+
+            photo = self.cleaned_data.get("photo")
+
+            if photo:
+                PhotoUser.objects.update_or_create(
+                    user=user,
+                    defaults={
+                        "image": photo
+                    }
+                )
 
         return user

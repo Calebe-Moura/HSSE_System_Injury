@@ -1,0 +1,629 @@
+{% extends "master.html" %}
+
+{% block title %}Incidents{% endblock %}
+
+{% block content %}
+
+<div class="min-h-screen bg-slate-50">
+<main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+
+    <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+
+        <div>
+            <p class="text-sm font-semibold uppercase tracking-wider text-blue-600">
+                HSEQ
+            </p>
+
+            <h1 class="mt-1 text-3xl font-bold tracking-tight text-slate-900">
+                Incident Management
+            </h1>
+
+            <p class="mt-2 text-sm text-slate-500">
+                Monitor, manage and investigate reported incidents.
+            </p>
+        </div>
+
+        <a
+            href="{% url 'injury_create' %}"
+            class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500/20"
+        >
+            <svg
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 4v16m8-8H4"
+                />
+            </svg>
+
+            Report Incident
+        </a>
+
+    </div>
+
+    <div class="mb-8 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+
+        <div class="border-b border-slate-100 px-6 py-5">
+
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900">
+                        Reported Incidents
+                    </h2>
+
+                    <p class="mt-1 text-sm text-slate-500">
+                        List of all incidents registered in the system.
+                    </p>
+                </div>
+
+                <span class="text-sm font-medium text-slate-500">
+                    {{ count_total }} incident{{ count_total|pluralize }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        {% if injuries %}
+
+            <div class="overflow-x-auto">
+
+                <table class="min-w-full divide-y divide-slate-200">
+
+                    <thead class="bg-slate-50">
+
+                        <tr>
+
+                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                ID
+                            </th>
+
+                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Title
+                            </th>
+
+                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Incident Date
+                            </th>
+
+                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Reported By
+                            </th>
+
+                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Responsible
+                            </th>
+
+                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Status
+                            </th>
+
+                            <th class="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody class="divide-y divide-slate-100">
+
+                        {% for injury in injuries %}
+
+                            <tr class="transition hover:bg-slate-50">
+
+                                <td class="whitespace-nowrap px-6 py-4">
+
+                                    <span class="font-mono text-sm font-semibold text-blue-600">
+                                        {{ injury.cod_sys }}
+                                    </span>
+
+                                </td>
+
+
+                                <td class="max-w-xs px-6 py-4">
+
+                                    <p class="truncate text-sm font-semibold text-slate-900">
+                                        {{ injury.title }}
+                                    </p>
+
+                                    <p class="mt-1 truncate text-xs text-slate-500">
+                                        {{ injury.unit }}
+                                    </p>
+
+                                </td>
+
+
+                                <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-600">
+
+                                    {% if injury.date_incident %}
+                                        {{ injury.date_incident|date:"M d, Y H:i" }}
+                                    {% else %}
+                                        —
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td class="whitespace-nowrap px-6 py-4">
+
+                                    {% if injury.reported_by %}
+
+                                        <div class="text-sm font-medium text-slate-800">
+                                            {{ injury.reported_by.get_full_name|default:injury.reported_by.username }}
+                                        </div>
+
+                                        <div class="text-xs text-slate-400">
+                                            {{ injury.reported_by.username }}
+                                        </div>
+
+                                    {% else %}
+
+                                        <span class="text-sm text-slate-400">
+                                            —
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td class="whitespace-nowrap px-6 py-4">
+
+                                    {% if injury.responsible %}
+
+                                        <div class="text-sm font-medium text-slate-700">
+                                            {{ injury.responsible.get_full_name|default:injury.responsible.username }}
+                                        </div>
+
+                                        <div class="text-xs text-slate-400">
+                                            {{ injury.responsible.username }}
+                                        </div>
+
+                                    {% else %}
+
+                                        <span class="text-sm text-slate-400">
+                                            —
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td class="whitespace-nowrap px-6 py-4">
+
+                                    {% if injury.status == "OPE" %}
+
+                                        <span class="inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700">
+
+                                            <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+
+                                            Open
+
+                                        </span>
+
+                                    {% elif injury.status == "CLO" %}
+
+                                        <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+
+                                            <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+
+                                            Closed
+
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
+                                            {{ injury.get_status_display }}
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td class="whitespace-nowrap px-6 py-4 text-right">
+
+                                    <a
+                                        href="{% url 'injury_detail' injury.id %}"
+                                        class="inline-flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-blue-600 transition hover:bg-blue-50"
+                                    >
+
+                                        View
+
+                                        <svg
+                                            class="h-4 w-4"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M9 5l7 7-7 7"
+                                            />
+                                        </svg>
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        {% else %}
+
+            <div class="px-6 py-16 text-center">
+
+                <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-100">
+
+                    <svg
+                        class="h-7 w-7 text-slate-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        />
+                    </svg>
+
+                </div>
+
+                <h3 class="mt-4 text-lg font-semibold text-slate-900">
+                    No incidents found
+                </h3>
+
+                <p class="mt-2 text-sm text-slate-500">
+                    Start by reporting a new incident.
+                </p>
+
+                <a
+                    href="{% url 'injury_create' %}"
+                    class="mt-6 inline-flex rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
+                >
+                    Report Incident
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+
+        <div class="border-b border-slate-100 px-6 py-5">
+
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+
+                <div>
+
+                    <h2 class="text-lg font-bold text-slate-900">
+                        Reported Actions
+                    </h2>
+
+                    <p class="mt-1 text-sm text-slate-500">
+                        Actions associated with the registered incidents.
+                    </p>
+
+                </div>
+
+                <span class="text-sm font-medium text-slate-500">
+                    {{ count_actions }} action{{ count_actions|pluralize }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        {% if actions %}
+
+            <div class="overflow-x-auto">
+
+                <table class="min-w-full divide-y divide-slate-200">
+
+                    <thead class="bg-slate-50">
+
+                        <tr>
+
+                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Incident
+                            </th>
+
+                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Task
+                            </th>
+
+                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Due Date
+                            </th>
+
+                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Responsible
+                            </th>
+
+                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Status
+                            </th>
+
+                            <th class="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody class="divide-y divide-slate-100">
+
+                        {% for act in actions %}
+
+                            <tr
+                                class="
+                                    transition
+                                    {% if act.is_overdue %}
+                                        bg-red-50 hover:bg-red-100
+                                    {% else %}
+                                        hover:bg-slate-50
+                                    {% endif %}
+                                "
+                            >
+
+                                <td class="whitespace-nowrap px-6 py-4">
+
+                                    <a
+                                        href="{% url 'injury_detail' act.injury.id %}"
+                                        class="font-mono text-sm font-semibold text-blue-600 hover:text-blue-800"
+                                    >
+                                        {{ act.injury.cod_sys }}
+                                    </a>
+
+                                </td>
+
+
+                                <td class="max-w-sm px-6 py-4">
+
+                                    <p
+                                        class="
+                                            text-sm font-semibold
+                                            {% if act.is_overdue %}
+                                                text-red-700
+                                            {% else %}
+                                                text-slate-900
+                                            {% endif %}
+                                        "
+                                    >
+                                        {{ act.task }}
+                                    </p>
+
+                                    {% if act.description %}
+
+                                        <p class="mt-1 max-w-sm truncate text-xs text-slate-500">
+                                            {{ act.description }}
+                                        </p>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td class="whitespace-nowrap px-6 py-4">
+
+                                    {% if act.is_overdue %}
+
+                                        <div class="flex items-center gap-2">
+
+                                            <svg
+                                                class="h-4 w-4 text-red-600"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M12 8v4m0 4h.01M10.29 3.86l-7.5 12.99A2 2 0 004.53 20h14.94a2 2 0 001.74-3.15l-7.5-12.99a2 2 0 00-3.42 0z"
+                                                />
+                                            </svg>
+
+                                            <div>
+
+                                                <p class="text-sm font-semibold text-red-700">
+                                                    {{ act.limit_date_action|date:"M d, Y H:i" }}
+                                                </p>
+
+                                                <p class="text-xs font-medium text-red-600">
+                                                    Overdue
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+                                    {% elif act.limit_date_action %}
+
+                                        <p class="text-sm text-slate-600">
+                                            {{ act.limit_date_action|date:"M d, Y H:i" }}
+                                        </p>
+
+                                    {% else %}
+
+                                        <span class="text-sm text-slate-400">
+                                            —
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td class="whitespace-nowrap px-6 py-4">
+
+                                    {% if act.responsible %}
+
+                                        <div class="text-sm font-medium text-slate-700">
+                                            {{ act.responsible.get_full_name|default:act.responsible.username }}
+                                        </div>
+
+                                        <div class="text-xs text-slate-400">
+                                            {{ act.responsible.username }}
+                                        </div>
+
+                                    {% else %}
+
+                                        <span class="text-sm text-slate-400">
+                                            —
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td class="whitespace-nowrap px-6 py-4">
+
+                                    {% if act.status == "COM" %}
+
+                                        <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+
+                                            <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+
+                                            Completed
+
+                                        </span>
+
+                                    {% elif act.is_overdue %}
+
+                                        <span class="inline-flex items-center gap-1.5 rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700">
+
+                                            <span class="h-1.5 w-1.5 rounded-full bg-red-500"></span>
+
+                                            Overdue
+
+                                        </span>
+
+                                    {% elif act.status == "ACT" %}
+
+                                        <span class="inline-flex items-center gap-1.5 rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
+
+                                            <span class="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
+
+                                            Active
+
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
+                                            {{ act.get_status_display }}
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td class="whitespace-nowrap px-6 py-4 text-right">
+
+                                    <a
+                                        href="{% url 'injury_detail' act.injury.id %}"
+                                        class="inline-flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-blue-600 transition hover:bg-blue-50"
+                                    >
+
+                                        View
+
+                                        <svg
+                                            class="h-4 w-4"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M9 5l7 7-7 7"
+                                            />
+                                        </svg>
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        {% else %}
+
+            <div class="px-6 py-16 text-center">
+
+                <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-100">
+
+                    <svg
+                        class="h-7 w-7 text-slate-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        />
+                    </svg>
+
+                </div>
+
+                <h3 class="mt-4 text-lg font-semibold text-slate-900">
+                    No actions found
+                </h3>
+
+                <p class="mt-2 text-sm text-slate-500">
+                    No actions have been registered for the incidents.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</main>
+
+</div>
+
+{% endblock %}
