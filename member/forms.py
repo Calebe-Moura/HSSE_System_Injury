@@ -6,19 +6,43 @@ from .models import PhotoUser
 
 class FormUser(forms.ModelForm):
 
+    # ============================================================
+    # PROFILE PHOTO
+    # ============================================================
+
     photo = forms.ImageField(
         required=False,
         label="Profile Photo",
         widget=forms.ClearableFileInput(
             attrs={
-                "class": "block w-full text-sm text-slate-600 "
-                         "file:mr-4 file:rounded-lg file:border-0 "
-                         "file:bg-blue-50 file:px-4 file:py-2 "
-                         "file:text-sm file:font-semibold "
-                         "file:text-blue-700 hover:file:bg-blue-100"
+                "class": (
+                    "block w-full text-sm text-slate-600 "
+                    "file:mr-4 file:rounded-lg file:border-0 "
+                    "file:bg-blue-50 file:px-4 file:py-2 "
+                    "file:text-sm file:font-semibold "
+                    "file:text-blue-700 hover:file:bg-blue-100"
+                )
             }
         ),
     )
+
+    # ============================================================
+    # SUPERUSER
+    # ============================================================
+
+    is_superuser = forms.BooleanField(
+        required=False,
+        label="Super User",
+        widget=forms.CheckboxInput(
+            attrs={
+                "class": "checkbox",
+            }
+        ),
+    )
+
+    # ============================================================
+    # PASSWORD
+    # ============================================================
 
     password1 = forms.CharField(
         label="Password",
@@ -42,6 +66,10 @@ class FormUser(forms.ModelForm):
         ),
     )
 
+    # ============================================================
+    # META
+    # ============================================================
+
     class Meta:
         model = User
 
@@ -50,6 +78,7 @@ class FormUser(forms.ModelForm):
             "last_name",
             "username",
             "email",
+            "is_superuser",
             "password1",
             "password2",
         ]
@@ -84,10 +113,25 @@ class FormUser(forms.ModelForm):
             ),
         }
 
+    # ============================================================
+    # INIT
+    # ============================================================
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.fields["photo"].initial = None
+
+        # UPDATE
+        # Carrega o estado atual do usuário.
+        if self.instance and self.instance.pk:
+            self.fields["is_superuser"].initial = (
+                self.instance.is_superuser
+            )
+
+    # ============================================================
+    # CLEAN
+    # ============================================================
 
     def clean(self):
         cleaned_data = super().clean()
@@ -95,7 +139,10 @@ class FormUser(forms.ModelForm):
         password1 = cleaned_data.get("password1")
         password2 = cleaned_data.get("password2")
 
-        # Criação de usuário
+        # --------------------------------------------------------
+        # CREATE
+        # --------------------------------------------------------
+
         if not self.instance.pk:
 
             if not password1:
@@ -110,7 +157,10 @@ class FormUser(forms.ModelForm):
                     "A confirmação da senha é obrigatória."
                 )
 
-        # Alteração de senha
+        # --------------------------------------------------------
+        # PASSWORD UPDATE
+        # --------------------------------------------------------
+
         if password1 or password2:
 
             if password1 != password2:
@@ -121,21 +171,55 @@ class FormUser(forms.ModelForm):
 
         return cleaned_data
 
+    # ============================================================
+    # SAVE
+    # ============================================================
+
     def save(self, commit=True):
 
         user = super().save(commit=False)
+
+        # --------------------------------------------------------
+        # PASSWORD
+        # --------------------------------------------------------
 
         password = self.cleaned_data.get("password1")
 
         if password:
             user.set_password(password)
 
-        user.is_staff = True
-        user.is_superuser = False
+        # --------------------------------------------------------
+        # SUPERUSER
+        # --------------------------------------------------------
+
+        user.is_superuser = self.cleaned_data.get(
+            "is_superuser",
+            False
+        )
+
+        # --------------------------------------------------------
+        # STAFF
+        # --------------------------------------------------------
+
+        # Superuser precisa ser staff para acessar o Django Admin.
+        user.is_staff = user.is_superuser
+
+        # --------------------------------------------------------
+        # ACTIVE
+        # --------------------------------------------------------
+
         user.is_active = True
+
+        # --------------------------------------------------------
+        # SAVE
+        # --------------------------------------------------------
 
         if commit:
             user.save()
+
+            # ----------------------------------------------------
+            # PROFILE PHOTO
+            # ----------------------------------------------------
 
             photo = self.cleaned_data.get("photo")
 
@@ -148,3 +232,4 @@ class FormUser(forms.ModelForm):
                 )
 
         return user
+

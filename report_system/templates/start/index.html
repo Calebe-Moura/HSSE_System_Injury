@@ -1,4 +1,5 @@
 {% extends "master.html" %}
+
 {% load static %}
 
 {% block title %}Report System{% endblock %}
@@ -274,7 +275,7 @@
                             </h3>
 
                             <p class="mt-1 text-sm text-slate-500">
-                                Reports submitted by you.
+                                Reports submitted by you or assigned to you.
                             </p>
 
                         </div>
@@ -440,7 +441,9 @@
                                 {% else %}
 
                                     <span class="inline-flex items-center rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700">
+
                                         {{ report.get_status_display }}
+
                                     </span>
 
                                 {% endif %}
@@ -501,6 +504,7 @@
 
             </div>
 
+
             {% else %}
 
 
@@ -533,7 +537,7 @@
                     </h4>
 
                     <p class="mt-1 text-sm text-slate-400">
-                        Reports created by you will appear here.
+                        Reports created by you or assigned to you will appear here.
                     </p>
 
                     <a
@@ -583,7 +587,7 @@
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
                                     stroke-width="2"
-                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a3 3 0 016 0"
                                 />
                             </svg>
 
@@ -622,7 +626,6 @@
 
 
             {% if my_action %}
-
 
             <!-- ACTION TABLE -->
 
@@ -665,19 +668,9 @@
 
                     <tbody class="divide-y divide-slate-100">
 
-
                         {% for action in my_action %}
 
-                        <tr
-                            class="
-                                transition
-                                {% if action.is_overdue %}
-                                    bg-red-50/40 hover:bg-red-50
-                                {% else %}
-                                    hover:bg-slate-50
-                                {% endif %}
-                            "
-                        >
+                        <tr class="transition {% if action.is_overdue %}bg-red-50/40 hover:bg-red-50{% else %}hover:bg-slate-50{% endif %}">
 
 
                             <!-- REPORT -->
@@ -686,18 +679,18 @@
 
                                 {% if action.injury %}
 
-                                <a
-                                    href="{% url 'injury_detail' action.injury.pk %}"
-                                    class="font-semibold text-blue-600 transition hover:text-blue-700"
-                                >
-                                    {{ action.injury.cod_sys }}
-                                </a>
+                                    <a
+                                        href="{% url 'injury_detail' action.injury.pk %}"
+                                        class="font-semibold text-blue-600 transition hover:text-blue-700"
+                                    >
+                                        {{ action.injury.cod_sys }}
+                                    </a>
 
                                 {% else %}
 
-                                <span class="text-slate-400">
-                                    —
-                                </span>
+                                    <span class="text-slate-400">
+                                        —
+                                    </span>
 
                                 {% endif %}
 
@@ -708,25 +701,15 @@
 
                             <td class="max-w-sm px-6 py-4">
 
-                                <p
-                                    class="
-                                        truncate
-                                        font-medium
-                                        {% if action.is_overdue %}
-                                            text-red-800
-                                        {% else %}
-                                            text-slate-800
-                                        {% endif %}
-                                    "
-                                >
+                                <p class="truncate font-medium {% if action.is_overdue %}text-red-800{% else %}text-slate-800{% endif %}">
                                     {{ action.task|default:"No task description" }}
                                 </p>
 
                                 {% if action.description %}
 
-                                <p class="mt-1 truncate text-xs text-slate-400">
-                                    {{ action.description }}
-                                </p>
+                                    <p class="mt-1 truncate text-xs text-slate-400">
+                                        {{ action.description }}
+                                    </p>
 
                                 {% endif %}
 
@@ -846,7 +829,9 @@
                                 {% else %}
 
                                     <span class="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
+
                                         {{ action.get_status_display }}
+
                                     </span>
 
                                 {% endif %}
@@ -860,28 +845,28 @@
 
                                 {% if action.injury %}
 
-                                <a
-                                    href="{% url 'injury_detail' action.injury.pk %}"
-                                    class="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 transition hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-600"
-                                >
-
-                                    View
-
-                                    <svg
-                                        class="h-3.5 w-3.5"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
+                                    <a
+                                        href="{% url 'injury_detail' action.injury.pk %}"
+                                        class="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 transition hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-600"
                                     >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M9 5l7 7-7 7"
-                                        />
-                                    </svg>
 
-                                </a>
+                                        View
+
+                                        <svg
+                                            class="h-3.5 w-3.5"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M9 5l7 7-7 7"
+                                            />
+                                        </svg>
+
+                                    </a>
 
                                 {% endif %}
 
@@ -965,6 +950,7 @@
     </div>
 
 </footer>
+```
 
 </div>
 
