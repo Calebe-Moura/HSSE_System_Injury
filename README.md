@@ -163,48 +163,14 @@ Exemplo utilizado no template:
 Além disso, o sistema utiliza o usuário autenticado para determinar quem pode visualizar ou gerenciar determinadas informações.
 
 ---
-Uma estrutura simplificada do projeto é:
+apps utilizados:
 
 ```text
-project/
-│
-├── manage.py
-│
-├── config/
-│   ├── __init__.py
-│   ├── settings.py
-│   ├── urls.py
-│   ├── asgi.py
-│   └── wsgi.py
-│
-├── incident/
-│   ├── models.py
-│   ├── forms.py
-│   ├── views.py
-│   ├── urls.py
-│   └── ...
-│
-├── report_system/
-│   ├── models.py
-│   ├── forms.py
-│   ├── views.py
-│   ├── urls.py
-│   └── ...
-│
-├── templates/
-│   ├── master.html
-│   ├── start/
-│   │   └── index.html
-│   └── ...
-│
-├── static/
-│   ├── css/
-│   └── js/
-│
-└── db.sqlite3
+- account
+- incident
+- member
+- report-system
 ```
-
-A estrutura pode variar conforme a organização final do projeto.
 
 ---
 
