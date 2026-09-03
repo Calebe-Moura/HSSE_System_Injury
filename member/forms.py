@@ -5,6 +5,15 @@ from .models import PhotoUser
 
 
 class FormUser(forms.ModelForm):
+    """
+    Formulário de criação/edição de usuários.
+
+    allow_superuser_change:
+        False -> não permite alterar is_superuser.
+        True  -> permite alterar is_superuser.
+
+    O padrão é False por segurança.
+    """
 
     # ============================================================
     # PROFILE PHOTO
@@ -20,7 +29,8 @@ class FormUser(forms.ModelForm):
                     "file:mr-4 file:rounded-lg file:border-0 "
                     "file:bg-blue-50 file:px-4 file:py-2 "
                     "file:text-sm file:font-semibold "
-                    "file:text-blue-700 hover:file:bg-blue-100"
+                    "file:text-blue-700 "
+                    "hover:file:bg-blue-100"
                 )
             }
         ),
@@ -51,6 +61,7 @@ class FormUser(forms.ModelForm):
             attrs={
                 "class": "input",
                 "placeholder": "Password",
+                "autocomplete": "new-password",
             }
         ),
     )
@@ -62,6 +73,7 @@ class FormUser(forms.ModelForm):
             attrs={
                 "class": "input",
                 "placeholder": "Confirm password",
+                "autocomplete": "new-password",
             }
         ),
     )
@@ -88,6 +100,7 @@ class FormUser(forms.ModelForm):
                 attrs={
                     "class": "input",
                     "placeholder": "First name",
+                    "autocomplete": "given-name",
                 }
             ),
 
@@ -95,6 +108,7 @@ class FormUser(forms.ModelForm):
                 attrs={
                     "class": "input",
                     "placeholder": "Last name",
+                    "autocomplete": "family-name",
                 }
             ),
 
@@ -102,6 +116,7 @@ class FormUser(forms.ModelForm):
                 attrs={
                     "class": "input",
                     "placeholder": "Username",
+                    "autocomplete": "username",
                 }
             ),
 
@@ -109,6 +124,7 @@ class FormUser(forms.ModelForm):
                 attrs={
                     "class": "input",
                     "placeholder": "E-mail",
+                    "autocomplete": "email",
                 }
             ),
         }
@@ -117,17 +133,39 @@ class FormUser(forms.ModelForm):
     # INIT
     # ============================================================
 
-    def __init__(self, *args, **kwargs):
+    def __init__(
+        self,
+        *args,
+        allow_superuser_change=False,
+        **kwargs
+    ):
         super().__init__(*args, **kwargs)
 
-        self.fields["photo"].initial = None
+        self.allow_superuser_change = allow_superuser_change
 
+        # --------------------------------------------------------
+        # SUPERUSER PERMISSION
+        # --------------------------------------------------------
+
+        if not self.allow_superuser_change:
+            # Remove completamente o campo quando não autorizado.
+            self.fields.pop("is_superuser", None)
+
+        # --------------------------------------------------------
         # UPDATE
-        # Carrega o estado atual do usuário.
+        # --------------------------------------------------------
+
         if self.instance and self.instance.pk:
-            self.fields["is_superuser"].initial = (
-                self.instance.is_superuser
-            )
+
+            # Nunca deixa o password existente aparecer.
+            self.fields["password1"].initial = None
+            self.fields["password2"].initial = None
+
+            # Se o campo existir, mostra o valor atual.
+            if "is_superuser" in self.fields:
+                self.fields["is_superuser"].initial = (
+                    self.instance.is_superuser
+                )
 
     # ============================================================
     # CLEAN
@@ -140,25 +178,7 @@ class FormUser(forms.ModelForm):
         password2 = cleaned_data.get("password2")
 
         # --------------------------------------------------------
-        # CREATE
-        # --------------------------------------------------------
-
-        if not self.instance.pk:
-
-            if not password1:
-                self.add_error(
-                    "password1",
-                    "A senha é obrigatória."
-                )
-
-            if not password2:
-                self.add_error(
-                    "password2",
-                    "A confirmação da senha é obrigatória."
-                )
-
-        # --------------------------------------------------------
-        # PASSWORD UPDATE
+        # PASSWORD
         # --------------------------------------------------------
 
         if password1 or password2:
@@ -167,6 +187,26 @@ class FormUser(forms.ModelForm):
                 self.add_error(
                     "password2",
                     "As senhas não coincidem."
+                )
+
+        # --------------------------------------------------------
+        # USERNAME
+        # --------------------------------------------------------
+
+        username = cleaned_data.get("username")
+
+        if username:
+            qs = User.objects.filter(
+                username__iexact=username
+            )
+
+            if self.instance and self.instance.pk:
+                qs = qs.exclude(pk=self.instance.pk)
+
+            if qs.exists():
+                self.add_error(
+                    "username",
+                    "Este username já está em uso."
                 )
 
         return cleaned_data
@@ -179,51 +219,75 @@ class FormUser(forms.ModelForm):
 
         user = super().save(commit=False)
 
-        # --------------------------------------------------------
+        # ========================================================
         # PASSWORD
-        # --------------------------------------------------------
+        # ========================================================
 
         password = self.cleaned_data.get("password1")
 
         if password:
             user.set_password(password)
 
-        # --------------------------------------------------------
+        # ========================================================
         # SUPERUSER
-        # --------------------------------------------------------
+        # ========================================================
 
-        user.is_superuser = self.cleaned_data.get(
-            "is_superuser",
-            False
-        )
+        if self.allow_superuser_change:
 
-        # --------------------------------------------------------
+            # Somente este formulário pode modificar
+            # o privilégio de superusuário.
+
+            user.is_superuser = self.cleaned_data.get(
+                "is_superuser",
+                user.is_superuser
+            )
+
+        else:
+
+            # Segurança:
+            # mantém exatamente o valor que o usuário já possuía.
+
+            if self.instance and self.instance.pk:
+                user.is_superuser = self.instance.is_superuser
+
+        # ========================================================
         # STAFF
-        # --------------------------------------------------------
+        # ========================================================
 
         # Superuser precisa ser staff para acessar o Django Admin.
-        user.is_staff = user.is_superuser
 
-        # --------------------------------------------------------
+        if user.is_superuser:
+            user.is_staff = True
+        else:
+            user.is_staff = False
+
+        # ========================================================
         # ACTIVE
-        # --------------------------------------------------------
+        # ========================================================
 
-        user.is_active = True
+        # Não altera o estado de usuários existentes.
+        #
+        # Para novos usuários, ativa automaticamente.
 
-        # --------------------------------------------------------
-        # SAVE
-        # --------------------------------------------------------
+        if not self.instance.pk:
+            user.is_active = True
+
+        # ========================================================
+        # SAVE USER
+        # ========================================================
 
         if commit:
+
             user.save()
 
-            # ----------------------------------------------------
+            # ====================================================
             # PROFILE PHOTO
-            # ----------------------------------------------------
+            # ====================================================
 
             photo = self.cleaned_data.get("photo")
 
             if photo:
+
                 PhotoUser.objects.update_or_create(
                     user=user,
                     defaults={
@@ -232,4 +296,3 @@ class FormUser(forms.ModelForm):
                 )
 
         return user
-

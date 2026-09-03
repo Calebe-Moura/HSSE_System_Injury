@@ -1,51 +1,124 @@
 {% extends "master.html" %}
 
-{% block title %}Edit Profile{% endblock %}
+{% load static %}
+
+{% block title %}Edit User{% endblock %}
 
 {% block content %}
 
 <div class="min-h-screen bg-slate-100">
 
-    <main class="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
+    <main class="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
 
-        <div class="mb-6">
+        <!-- ================================================== -->
+        <!-- HEADER -->
+        <!-- ================================================== -->
+
+        <div class="mb-8">
 
             <a
                 href="{% url 'list_user' %}"
-                class="inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-blue-600"
+                class="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 transition hover:text-blue-700"
             >
-
-                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M15 19l-7-7 7-7"/>
+                <svg
+                    class="h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 19l-7-7 7-7"
+                    />
                 </svg>
 
-                Back to Users
-
+                Back to users
             </a>
 
-        </div>
 
+            <div class="mt-5">
 
-        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+                <p class="text-sm font-medium text-emerald-600">
+                    User Management
+                </p>
 
-            <div class="border-b border-slate-100 px-6 py-6 sm:px-8">
-
-                <h1 class="text-2xl font-bold text-slate-900">
-                    Edit Profile
+                <h1 class="mt-1 text-3xl font-bold tracking-tight text-slate-900">
+                    Edit User
                 </h1>
 
-                <p class="mt-1 text-sm text-slate-500">
-                    Update the user's account information.
+                <p class="mt-2 text-slate-500">
+                    Manage the user's account information and system permissions.
                 </p>
 
             </div>
 
+        </div>
 
-            <form method="POST" class="p-6 sm:p-8">
+
+        <!-- ================================================== -->
+        <!-- FORM -->
+        <!-- ================================================== -->
+
+        <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+
+
+            <!-- ============================================== -->
+            <!-- HEADER -->
+            <!-- ============================================== -->
+
+            <div class="border-b border-slate-100 px-6 py-5">
+
+                <div class="flex items-center gap-3">
+
+                    <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-50">
+
+                        <svg
+                            class="h-5 w-5 text-emerald-600"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                            />
+                        </svg>
+
+                    </div>
+
+                    <div>
+
+                        <h2 class="font-bold text-slate-900">
+                            {{ my_user.get_full_name|default:my_user.username }}
+                        </h2>
+
+                        <p class="mt-1 text-sm text-slate-500">
+                            @{{ my_user.username }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <form
+                method="POST"
+                enctype="multipart/form-data"
+                class="p-6"
+            >
 
                 {% csrf_token %}
 
+
+                <!-- ========================================== -->
+                <!-- ERRORS -->
+                <!-- ========================================== -->
 
                 {% if form.non_field_errors %}
 
@@ -53,7 +126,7 @@
 
                         {% for error in form.non_field_errors %}
 
-                            <p class="text-sm text-red-600">
+                            <p class="text-sm font-medium text-red-700">
                                 {{ error }}
                             </p>
 
@@ -64,8 +137,26 @@
                 {% endif %}
 
 
-                <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <!-- ========================================== -->
+                <!-- PERSONAL INFORMATION -->
+                <!-- ========================================== -->
 
+                <div>
+
+                    <h3 class="font-bold text-slate-900">
+                        Personal Information
+                    </h3>
+
+                    <p class="mt-1 text-sm text-slate-500">
+                        Update the user's basic account information.
+                    </p>
+
+                </div>
+
+
+                <div class="mt-5 grid grid-cols-1 gap-6 md:grid-cols-2">
+
+                    <!-- FIRST NAME -->
 
                     <div>
 
@@ -73,21 +164,21 @@
                             for="{{ form.first_name.id_for_label }}"
                             class="mb-2 block text-sm font-semibold text-slate-700"
                         >
-                            First Name
+                            First name
                         </label>
 
                         {{ form.first_name }}
 
                         {% for error in form.first_name.errors %}
-
-                            <p class="mt-1 text-xs text-red-600">
+                            <p class="mt-1 text-sm text-red-600">
                                 {{ error }}
                             </p>
-
                         {% endfor %}
 
                     </div>
 
+
+                    <!-- LAST NAME -->
 
                     <div>
 
@@ -95,21 +186,25 @@
                             for="{{ form.last_name.id_for_label }}"
                             class="mb-2 block text-sm font-semibold text-slate-700"
                         >
-                            Last Name
+                            Last name
                         </label>
 
                         {{ form.last_name }}
 
                         {% for error in form.last_name.errors %}
-
-                            <p class="mt-1 text-xs text-red-600">
+                            <p class="mt-1 text-sm text-red-600">
                                 {{ error }}
                             </p>
-
                         {% endfor %}
 
                     </div>
 
+                </div>
+
+
+                <div class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+
+                    <!-- USERNAME -->
 
                     <div>
 
@@ -123,15 +218,15 @@
                         {{ form.username }}
 
                         {% for error in form.username.errors %}
-
-                            <p class="mt-1 text-xs text-red-600">
+                            <p class="mt-1 text-sm text-red-600">
                                 {{ error }}
                             </p>
-
                         {% endfor %}
 
                     </div>
 
+
+                    <!-- EMAIL -->
 
                     <div>
 
@@ -139,106 +234,248 @@
                             for="{{ form.email.id_for_label }}"
                             class="mb-2 block text-sm font-semibold text-slate-700"
                         >
-                            Email
+                            E-mail
                         </label>
 
                         {{ form.email }}
 
                         {% for error in form.email.errors %}
-
-                            <p class="mt-1 text-xs text-red-600">
+                            <p class="mt-1 text-sm text-red-600">
                                 {{ error }}
                             </p>
-
                         {% endfor %}
 
                     </div>
 
-
-                    <div>
-
-                        <label
-                            for="{{ form.password1.id_for_label }}"
-                            class="mb-2 block text-sm font-semibold text-slate-700"
-                        >
-                            New Password
-                        </label>
-
-                        {{ form.password1 }}
-
-                        <p class="mt-1 text-xs text-slate-400">
-                            Leave blank to keep the current password.
-                        </p>
-
-                        {% for error in form.password1.errors %}
-
-                            <p class="mt-1 text-xs text-red-600">
-                                {{ error }}
-                            </p>
-
-                        {% endfor %}
-
-                    </div>
-
-
-                    <div>
-
-                        <label
-                            for="{{ form.password2.id_for_label }}"
-                            class="mb-2 block text-sm font-semibold text-slate-700"
-                        >
-                            Confirm New Password
-                        </label>
-
-                        {{ form.password2 }}
-
-                        {% for error in form.password2.errors %}
-
-                            <p class="mt-1 text-xs text-red-600">
-                                {{ error }}
-                            </p>
-
-                        {% endfor %}
-
-                    </div>
-                                        <div>
-
-                        <label
-                            for="{{ form.username.id_for_label }}"
-                            class="mb-2 block text-sm font-semibold text-slate-700"
-                        >
-                            Superuser
-                        </label>
-
-                        {{ form.is_superuser }}
-
-                        {% for error in form.username.errors %}
-
-                            <p class="mt-1 text-xs text-red-600">
-                                {{ error }}
-                            </p>
-
-                        {% endfor %}
-
-                    </div>
                 </div>
 
 
-                <div class="mt-8 flex flex-col-reverse gap-3 border-t border-slate-100 pt-6 sm:flex-row sm:justify-end">
+                <!-- ========================================== -->
+                <!-- PHOTO -->
+                <!-- ========================================== -->
 
-                    <a
-                        href="{% url 'list_user' %}"
-                        class="inline-flex items-center justify-center rounded-xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50"
-                    >
-                        Cancel
-                    </a>
+                <div class="mt-6">
 
-                    <button
-                        type="submit"
-                        class="inline-flex items-center justify-center rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500/20"
+                    <label
+                        for="{{ form.photo.id_for_label }}"
+                        class="mb-2 block text-sm font-semibold text-slate-700"
                     >
-                        Save Changes
-                    </button>
+                        Profile Photo
+                    </label>
+
+                    {{ form.photo }}
+
+                    {% for error in form.photo.errors %}
+                        <p class="mt-1 text-sm text-red-600">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+
+                </div>
+
+
+                <!-- ========================================== -->
+                <!-- PERMISSIONS -->
+                <!-- ========================================== -->
+
+                <div class="mt-8 border-t border-slate-100 pt-8">
+
+                    <div class="mb-5">
+
+                        <h3 class="font-bold text-slate-900">
+                            System Permissions
+                        </h3>
+
+                        <p class="mt-1 text-sm text-slate-500">
+                            Manage administrative access for this user.
+                        </p>
+
+                    </div>
+
+
+                    <div class="rounded-xl border border-emerald-100 bg-emerald-50 p-5">
+
+                        <div class="flex items-start gap-4">
+
+                            <div class="pt-1">
+
+                                {{ form.is_superuser }}
+
+                            </div>
+
+                            <div>
+
+                                <label
+                                    for="{{ form.is_superuser.id_for_label }}"
+                                    class="font-semibold text-slate-900"
+                                >
+                                    Super User
+                                </label>
+
+                                <p class="mt-1 text-sm leading-6 text-slate-600">
+                                    Grants full administrative access to the system,
+                                    including access to the Django administration.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        {% for error in form.is_superuser.errors %}
+                            <p class="mt-2 text-sm text-red-600">
+                                {{ error }}
+                            </p>
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- ========================================== -->
+                <!-- PASSWORD -->
+                <!-- ========================================== -->
+
+                <div class="mt-8 border-t border-slate-100 pt-8">
+
+                    <div class="mb-5">
+
+                        <h3 class="font-bold text-slate-900">
+                            Password
+                        </h3>
+
+                        <p class="mt-1 text-sm text-slate-500">
+                            Leave these fields empty to keep the current password.
+                        </p>
+
+                    </div>
+
+
+                    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+
+                        <div>
+
+                            <label
+                                for="{{ form.password1.id_for_label }}"
+                                class="mb-2 block text-sm font-semibold text-slate-700"
+                            >
+                                New password
+                            </label>
+
+                            {{ form.password1 }}
+
+                            {% for error in form.password1.errors %}
+                                <p class="mt-1 text-sm text-red-600">
+                                    {{ error }}
+                                </p>
+                            {% endfor %}
+
+                        </div>
+
+
+                        <div>
+
+                            <label
+                                for="{{ form.password2.id_for_label }}"
+                                class="mb-2 block text-sm font-semibold text-slate-700"
+                            >
+                                Confirm password
+                            </label>
+
+                            {{ form.password2 }}
+
+                            {% for error in form.password2.errors %}
+                                <p class="mt-1 text-sm text-red-600">
+                                    {{ error }}
+                                </p>
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ========================================== -->
+                <!-- WARNING -->
+                <!-- ========================================== -->
+
+                <div class="mt-8 rounded-xl border border-amber-200 bg-amber-50 p-4">
+
+                    <div class="flex gap-3">
+
+                        <svg
+                            class="mt-0.5 h-5 w-5 shrink-0 text-amber-600"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 9v2m0 4h.01M10.29 3.86l-7.82 14a1 1 0 00.87 1.5h17.32a1 1 0 00.87-1.5l-7.82-14a1 1 0 00-1.74 0z"
+                            />
+                        </svg>
+
+                        <div>
+
+                            <p class="text-sm font-semibold text-amber-800">
+                                Administrative permission
+                            </p>
+
+                            <p class="mt-1 text-sm leading-6 text-amber-700">
+                                Changing Super User grants or removes administrative
+                                access for this account.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ========================================== -->
+                <!-- BUTTONS -->
+                <!-- ========================================== -->
+
+                <div class="mt-8 flex flex-col-reverse gap-3 border-t border-slate-100 pt-6 sm:flex-row sm:justify-between">
+
+                    <div>
+
+                        {% if my_user.pk != request.user.pk %}
+
+                            <a
+                                href="{% url 'remove_user' my_user.pk %}"
+                                class="inline-flex items-center justify-center rounded-lg border border-red-200 px-5 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                            >
+                                Delete user
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="flex flex-col gap-3 sm:flex-row">
+
+                        <a
+                            href="{% url 'list_user' %}"
+                            class="inline-flex items-center justify-center rounded-lg border border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50"
+                        >
+                            Cancel
+                        </a>
+
+                        <button
+                            type="submit"
+                            class="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700"
+                        >
+                            Save changes
+                        </button>
+
+                    </div>
 
                 </div>
 

@@ -32,16 +32,28 @@
             <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-8 sm:px-8">
 
                 <div class="flex flex-col items-center gap-4 sm:flex-row">
+                    
+                    {% if my_user.profile_photo.image %}
 
-                    <div class="flex h-20 w-20 items-center justify-center rounded-full bg-white text-2xl font-bold uppercase text-blue-700 shadow-lg">
+                    <img
+                        src="{{ my_user.profile_photo.image.url }}"
+                        alt="{{ my_user.get_full_name|default:my_user.username }}"
+                        class="h-20 w-20 rounded-full object-cover shadow-lg ring-4 ring-white/30"
+                    >
 
+                {% else %}
+
+                    <div
+                        class="flex h-20 w-20 items-center justify-center rounded-full bg-white text-2xl font-bold uppercase text-blue-700 shadow-lg"
+                    >
                         {% if my_user.first_name %}
                             {{ my_user.first_name|first|upper }}
                         {% else %}
                             {{ my_user.username|first|upper }}
                         {% endif %}
-
                     </div>
+
+                {% endif %}
 
                     <div class="text-center sm:text-left">
 

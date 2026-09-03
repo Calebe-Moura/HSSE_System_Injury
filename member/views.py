@@ -11,12 +11,36 @@ from .forms import FormUser
 from .models import PhotoUser
 
 
+# ================================================================
+# HELPER
+# ================================================================
+
+def is_authenticated(request):
+    """
+    Verifica se o usuário está autenticado.
+    """
+
+    return request.user.is_authenticated
+
+
+def is_superuser(request):
+    """
+    Verifica se o usuário atual é superuser.
+    """
+
+    return request.user.is_superuser
+
+
+# ================================================================
+# USER LIST
+# ================================================================
+
 def list_user(request):
 
-    if not request.user.is_authenticated:
+    if not is_authenticated(request):
         return redirect("login")
 
-    if not request.user.is_superuser:
+    if not is_superuser(request):
         return redirect("start")
 
     users = (
@@ -26,6 +50,7 @@ def list_user(request):
         .order_by(
             "first_name",
             "last_name",
+            "username",
         )
     )
 
@@ -38,15 +63,24 @@ def list_user(request):
     )
 
 
+# ================================================================
+# USER DETAIL
+# ================================================================
+
 def detail_user(request, user_id):
 
-    if not request.user.is_authenticated:
+    if not is_authenticated(request):
         return redirect("login")
+
+    if not is_superuser(request):
+        return redirect("start")
 
     user = get_object_or_404(
         User.objects.select_related("profile_photo"),
         id=user_id,
     )
+    
+    
 
     return render(
         request,
@@ -57,9 +91,13 @@ def detail_user(request, user_id):
     )
 
 
+# ================================================================
+# MY PROFILE
+# ================================================================
+
 def my_user(request):
 
-    if not request.user.is_authenticated:
+    if not is_authenticated(request):
         return redirect("login")
 
     user = (
@@ -77,12 +115,20 @@ def my_user(request):
     )
 
 
+# ================================================================
+# EDIT MY PROFILE
+# ================================================================
+
 def edit_my_user(request):
 
-    if not request.user.is_authenticated:
+    if not is_authenticated(request):
         return redirect("login")
 
     user = request.user
+
+    # ------------------------------------------------------------
+    # POST
+    # ------------------------------------------------------------
 
     if request.method == "POST":
 
@@ -90,6 +136,7 @@ def edit_my_user(request):
             request.POST,
             request.FILES,
             instance=user,
+            allow_superuser_change=False,
         )
 
         if form.is_valid():
@@ -98,10 +145,15 @@ def edit_my_user(request):
 
             return redirect("my_user")
 
+    # ------------------------------------------------------------
+    # GET
+    # ------------------------------------------------------------
+
     else:
 
         form = FormUser(
             instance=user,
+            allow_superuser_change=False,
         )
 
     return render(
@@ -109,16 +161,25 @@ def edit_my_user(request):
         "member/my_user_edit.html",
         {
             "form": form,
+            "my_user": user,
         }
     )
 
 
+# ================================================================
+# DELETE MY ACCOUNT
+# ================================================================
+
 def my_user_delete(request):
 
-    if not request.user.is_authenticated:
+    if not is_authenticated(request):
         return redirect("login")
 
     user = request.user
+
+    # ------------------------------------------------------------
+    # POST
+    # ------------------------------------------------------------
 
     if request.method == "POST":
 
@@ -128,18 +189,26 @@ def my_user_delete(request):
 
         return redirect("login")
 
+    # ------------------------------------------------------------
+    # GET
+    # ------------------------------------------------------------
+
     return render(
         request,
         "member/my_user_delete.html"
     )
 
 
+# ================================================================
+# EDIT USER - ADMIN
+# ================================================================
+
 def edit_user(request, user_id):
 
-    if not request.user.is_authenticated:
+    if not is_authenticated(request):
         return redirect("login")
 
-    if not request.user.is_superuser:
+    if not is_superuser(request):
         return redirect("start")
 
     user = get_object_or_404(
@@ -147,12 +216,17 @@ def edit_user(request, user_id):
         id=user_id,
     )
 
+    # ------------------------------------------------------------
+    # POST
+    # ------------------------------------------------------------
+
     if request.method == "POST":
 
         form = FormUser(
             request.POST,
             request.FILES,
             instance=user,
+            allow_superuser_change=True,
         )
 
         if form.is_valid():
@@ -161,10 +235,15 @@ def edit_user(request, user_id):
 
             return redirect("list_user")
 
+    # ------------------------------------------------------------
+    # GET
+    # ------------------------------------------------------------
+
     else:
 
         form = FormUser(
             instance=user,
+            allow_superuser_change=True,
         )
 
     return render(
@@ -177,12 +256,16 @@ def edit_user(request, user_id):
     )
 
 
+# ================================================================
+# REMOVE USER - ADMIN
+# ================================================================
+
 def remove_user(request, user_id):
 
-    if not request.user.is_authenticated:
+    if not is_authenticated(request):
         return redirect("login")
 
-    if not request.user.is_superuser:
+    if not is_superuser(request):
         return redirect("start")
 
     user = get_object_or_404(
@@ -190,15 +273,25 @@ def remove_user(request, user_id):
         id=user_id,
     )
 
+    # ------------------------------------------------------------
+    # POST
+    # ------------------------------------------------------------
+
     if request.method == "POST":
 
-        # Impede o administrador de apagar a própria conta
-        if user.id == request.user.id: # pyright: ignore[reportAttributeAccessIssue]
+        # Não permite que o administrador exclua
+        # a própria conta.
+
+        if user.pk == request.user.pk:
             return redirect("list_user")
 
         user.delete()
 
         return redirect("list_user")
+
+    # ------------------------------------------------------------
+    # GET
+    # ------------------------------------------------------------
 
     return render(
         request,

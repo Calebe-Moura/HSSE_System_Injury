@@ -108,21 +108,26 @@
 
                 <!-- Avatar -->
 
-                <div
-                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100 text-sm font-bold uppercase text-blue-700"
-                >
+                <td class="whitespace-nowrap px-6 py-4">
+                                <div class="flex items-center gap-3">
 
-                    {% if request.user.first_name %}
-
-                        {{ request.user.first_name|first|upper }}
-
-                    {% else %}
-
-                        {{ request.user.username|first|upper }}
-
-                    {% endif %}
-
-                </div>
+                                    {% if user.profile_photo.image %}
+                                        <img
+                                            src="{{ user.profile_photo.image.url }}"
+                                            alt="{{ user.get_full_name|default:user.username }}"
+                                            class="h-12 w-12 rounded-full object-cover shadow-sm ring-2 ring-slate-100"
+                                        >
+                                    {% else %}
+                                        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-lg font-bold uppercase text-blue-700">
+                                            {% if user.first_name %}
+                                                {{ user.first_name|first|upper }}
+                                            {% else %}
+                                                {{ user.username|first|upper }}
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </td>
 
 
                 <!-- Arrow -->
@@ -163,23 +168,7 @@
 
                     <div class="flex items-center gap-3">
 
-                        <div
-                            class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-blue-100 text-sm font-bold uppercase text-blue-700"
-                        >
-
-                            {% if request.user.first_name %}
-
-                                {{ request.user.first_name|first|upper }}
-
-                            {% else %}
-
-                                {{ request.user.username|first|upper }}
-
-                            {% endif %}
-
-                        </div>
-
-
+                        
                         <div class="min-w-0">
 
                             <p class="truncate text-sm font-semibold text-slate-900">
@@ -294,7 +283,7 @@
 
                                 <p class="text-sm font-semibold text-slate-700 group-hover:text-blue-600">
 
-                                    All Profile Management
+                                    Profile Management
 
                                 </p>
 
@@ -386,7 +375,8 @@
     <script src="{% static 'js/dropdown.js' %}"></script>
 
     {% block extra_scripts %}
-    {% endblock %}
+    
+    {% endblock extra_scripts %}
 
 </body>
 
