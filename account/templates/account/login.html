@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block title %}Login | System{% endblock %}
 
 {% block content %}
@@ -8,11 +8,11 @@
 
     <div class="relative hidden overflow-hidden bg-slate-950 lg:flex lg:w-1/2">
 
-        <div class="absolute inset-0 bg-gradient-to-br from-blue-900 via-slate-950 to-slate-950"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-indigo-800 via-indigo-950 to-slate-950"></div>
 
         <div class="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-blue-600/20 blur-3xl"></div>
 
-        <div class="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-indigo-600/20 blur-3xl"></div>
+        <div class="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-indigo-800/40 blur-3xl"></div>
 
         <div class="relative z-10 flex w-full flex-col justify-between p-12 xl:p-16">
 
@@ -20,27 +20,7 @@
 
                 <div class="flex items-center gap-3">
 
-                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-600 shadow-lg shadow-blue-600/30">
-
-                        <svg
-                            class="h-6 w-6 text-white"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M12 3L4 7v5c0 5.25 3.4 8.85 8 10 4.6-1.15 8-4.75 8-10V7l-8-4z"
-                            />
-                        </svg>
-
-                    </div>
-
-                    <span class="text-xl font-bold tracking-tight text-white">
-                        Report System HSSE
-                    </span>
+                    <img src="{% static 'images/public/YP-logo-white.svg' %}" class="w-15">
 
                 </div>
 
@@ -49,16 +29,12 @@
 
             <div class="max-w-xl">
 
-                <span class="mb-5 inline-flex rounded-full border border-blue-400/20 bg-blue-400/10 px-4 py-1.5 text-sm font-medium text-blue-300">
-                    Corporate Platform
-                </span>
-
                 <h1 class="text-4xl font-bold leading-tight text-white xl:text-5xl">
 
-                    Smart management,
+                    Occupational Safety,
 
-                    <span class="text-blue-400">
-                        safety and efficiency.
+                    <span class="text-yellow-500">
+                        smart management.
                     </span>
 
                 </h1>
@@ -121,11 +97,11 @@
 
             <div class="mb-8">
 
-                <h2 class="text-3xl font-bold tracking-tight text-slate-900">
+                <h2 class="text-4xl font-bold tracking-tight text-indigo-900">
                     Welcome!
                 </h2>
 
-                <p class="mt-2 text-sm text-slate-500">
+                <p class="mt-2 text-sm text-yellow-600">
                     Sign in with your credentials to access your account.
                 </p>
 
@@ -155,13 +131,7 @@
 
                 <div>
 
-                    <label
-                        for="{{ form.username.id_for_label }}"
-                        class="mb-2 block text-sm font-semibold text-slate-700"
-                    >
-                        Email or username
-                    </label>
-
+                    
                     {{ form.username }}
 
                     {% for error in form.username.errors %}
@@ -177,13 +147,7 @@
 
                 <div>
 
-                    <label
-                        for="{{ form.password.id_for_label }}"
-                        class="mb-2 block text-sm font-semibold text-slate-700"
-                    >
-                        Password
-                    </label>
-
+                    
                     {{ form.password }}
 
                     {% for error in form.password.errors %}
@@ -199,7 +163,7 @@
 
                 <button
                     type="submit"
-                    class="group flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3.5 text-sm font-semibold text-white shadow-lg shadow-blue-600/20 transition duration-200 hover:bg-blue-700 hover:shadow-blue-600/30 focus:outline-none focus:ring-4 focus:ring-blue-600/20"
+                    class="group flex w-full items-center justify-center gap-2 rounded-xl bg-yellow-400 px-5 py-2.5 text-lg font-semibold text-white shadow-lg shadow-yellow-400/20 transition duration-200 hover:bg-yellow-500 hover:shadow-yellow-500/30 focus:outline-none focus:ring-4 focus:ring-yellow-500/20"
                 >
 
                     Sign in
@@ -225,20 +189,20 @@
 
             <div class="my-8 flex items-center gap-4">
 
-                <div class="h-px flex-1 bg-slate-200"></div>
+                <div class="h-px flex-1 bg-indigo-900"></div>
 
-                <span class="text-xs font-medium uppercase tracking-wider text-slate-400">
+                <span class="text-xs font-medium uppercase tracking-wider text-indigo-900">
                     New user?
                 </span>
 
-                <div class="h-px flex-1 bg-slate-200"></div>
+                <div class="h-px flex-1 bg-indigo-900"></div>
 
             </div>
 
 
             <a
                 href="{% url 'register' %}"
-                class="flex w-full items-center justify-center rounded-xl border border-slate-200 bg-white px-5 py-3.5 text-sm font-semibold text-slate-700 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700"
+                class="flex w-full items-center justify-center rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-lg text-indigo-900 font-semibold text-slate-700 transition hover:border-indigo-900/40 hover:bg-indigo-100 hover:text-indigo-800"
             >
                 Create an account
             </a>
