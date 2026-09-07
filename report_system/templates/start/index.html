@@ -25,7 +25,7 @@
             {{ request.user.first_name|default:request.user.username }}
         </h2>
 
-        <p class="mt-2 text-slate-500">
+        <p class="mt-2 text-indigo-950">
             Manage your reports, actions and safety information.
         </p>
 
@@ -115,26 +115,27 @@
                             <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
                                 Report
                             </th>
-
-                            <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
-                                Title
+                            
+                            <th class="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Type
                             </th>
-
+                            
                             <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
                                 Incident Date
                             </th>
-
+                            
                             <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
                                 Responsible
                             </th>
-
+                            
                             <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
                                 Status
                             </th>
-
-                            <th class="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">
-                                Action
+                            
+                            <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Title
                             </th>
+                            
 
                         </tr>
 
@@ -152,9 +153,11 @@
 
                             <td class="whitespace-nowrap px-6 py-4">
 
-                                <span class="font-semibold text-slate-900">
-                                    {{ report.cod_sys }}
-                                </span>
+                                <a href="{% url 'injury_detail' report.pk %}">
+                                    <span class="font-semibold text-slate-900">
+                                        {{ report.cod_sys }}
+                                    </span>
+                                </a>
 
                             </td>
 
@@ -163,17 +166,14 @@
 
                             <td class="max-w-xs px-6 py-4">
 
-                                <p class="truncate font-medium text-slate-800">
-                                    {{ report.title|default:"Untitled report" }}
-                                </p>
-
-                                {% if report.type_incident %}
-
-                                <p class="mt-1 truncate text-xs text-slate-400">
-                                    {{ report.get_type_incident_display|default:report.type_incident }}
-                                </p>
-
-                                {% endif %}
+                                
+                                <a href="{% url 'injury_detail' report.pk %}">
+                                    {% if report.type_incident %}
+                                    <p class="truncate font-medium text-slate-800">
+                                        {{ report.get_type_incident_display|default:report.type_incident }}
+                                    </p>
+                                    {% endif %}
+                                </a>
 
                             </td>
 
@@ -182,15 +182,13 @@
 
                             <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-600">
 
-                                {% if report.date_incident %}
-
-                                    {{ report.date_incident|date:"M d, Y H:i" }}
-
-                                {% else %}
-
-                                    —
-
-                                {% endif %}
+                                <a href="{% url 'injury_detail' report.pk %}">
+                                    {% if report.date_incident %}
+                                        {{ report.date_incident|date:"M d, Y H:i" }}
+                                    {% else %}
+                                        —
+                                    {% endif %}
+                                </a>
 
                             </td>
 
@@ -199,17 +197,15 @@
 
                             <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-600">
 
-                                {% if report.responsible %}
-
-                                    {{ report.responsible.get_full_name|default:report.responsible.username }}
-
-                                {% else %}
-
-                                    <span class="text-slate-400">
-                                        Not assigned
-                                    </span>
-
-                                {% endif %}
+                                <a href="{% url 'injury_detail' report.pk %}">
+                                    {% if report.responsible %}
+                                        {{ report.responsible.get_full_name|default:report.responsible.username }}
+                                    {% else %}
+                                        <span class="text-slate-400">
+                                            Not assigned
+                                        </span>
+                                    {% endif %}
+                                </a>
 
                             </td>
 
@@ -218,35 +214,23 @@
 
                             <td class="whitespace-nowrap px-6 py-4">
 
-                                {% if report.status == "OPE" %}
-
-                                    <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
-
-                                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-
-                                        Open
-
-                                    </span>
-
-                                {% elif report.status == "CLO" %}
-
-                                    <span class="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
-
-                                        <span class="h-1.5 w-1.5 rounded-full bg-slate-400"></span>
-
-                                        Closed
-
-                                    </span>
-
-                                {% else %}
-
-                                    <span class="inline-flex items-center rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700">
-
-                                        {{ report.get_status_display }}
-
-                                    </span>
-
-                                {% endif %}
+                                <a href="{% url 'injury_detail' report.pk %}">
+                                    {% if report.status == "OPE" %}
+                                        <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
+                                            <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                                            Open
+                                        </span>
+                                    {% elif report.status == "CLO" %}
+                                        <span class="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
+                                            <span class="h-1.5 w-1.5 rounded-full bg-slate-400"></span>
+                                            Closed
+                                        </span>
+                                    {% else %}
+                                        <span class="inline-flex items-center rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700">
+                                            {{ report.get_status_display }}
+                                        </span>
+                                    {% endif %}
+                                </a>
 
                             </td>
 
@@ -255,27 +239,10 @@
 
                             <td class="whitespace-nowrap px-6 py-4 text-right">
 
-                                <a
-                                    href="{% url 'injury_detail' report.pk %}"
-                                    class="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
-                                >
-
-                                    View
-
-                                    <svg
-                                        class="h-3.5 w-3.5"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M9 5l7 7-7 7"
-                                        />
-                                    </svg>
-
+                                <a href="{% url 'injury_detail' report.pk %}">
+                                    <p class="truncate font-medium text-slate-800">
+                                        {{ report.title|default:"Untitled report" }}
+                                    </p>
                                 </a>
 
                             </td>
@@ -297,7 +264,7 @@
 
                 <a
                     href="{% url 'injury_list' %}"
-                    class="text-sm font-semibold text-blue-600 transition hover:text-blue-700"
+                    class="text-sm font-semibold text-indigo-600 transition hover:text-indigo-700"
                 >
                     View all reports →
                 </a>
@@ -342,7 +309,7 @@
 
                     <a
                         href="{% url 'injury_create' %}"
-                        class="mt-4 inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
+                        class="mt-4 inline-flex items-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700"
                     >
                         Create your first report
                     </a>
@@ -375,10 +342,10 @@
 
                     <div class="flex items-center gap-3">
 
-                        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-50">
+                        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-yellow-50">
 
                             <svg
-                                class="h-5 w-5 text-indigo-600"
+                                class="h-5 w-5 text-yellow-600"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -395,11 +362,11 @@
 
                         <div>
 
-                            <h3 class="font-bold text-slate-900">
+                            <h3 class="font-bold text-indigo-900">
                                 My Actions
                             </h3>
 
-                            <p class="mt-1 text-sm text-slate-500">
+                            <p class="mt-1 text-sm text-indigo-950">
                                 Actions assigned to you.
                             </p>
 
@@ -410,13 +377,13 @@
                 </div>
 
 
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 bg-yellow-50 rounded-full px-3 py-1 text-yellow-600">
 
-                    <span class="rounded-lg bg-indigo-50 px-3 py-1.5 text-sm font-bold text-indigo-600">
+                    <span class="font-bold">
                         {{ my_action|length }}
                     </span>
 
-                    <span class="text-sm text-slate-400">
+                    <span class="">
                         action{{ my_action|length|pluralize }}
                     </span>
 
@@ -431,9 +398,9 @@
 
             <div class="overflow-x-auto">
 
-                <table class="w-full min-w-[1000px] text-left">
+                <table class="w-full min-w-[900px] text-left">
 
-                    <thead class="border-b border-slate-100 bg-slate-50">
+                    <thead class="border-b border-indigo-800 bg-slate-50">
 
                         <tr>
 

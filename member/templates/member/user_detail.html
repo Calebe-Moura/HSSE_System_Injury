@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<div class="min-h-screen bg-slate-100">
+<div class="min-h-screen bg-slate-50">
 
     <main class="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
 
@@ -12,7 +12,7 @@
 
             <a
                 href="{% url 'list_user' %}"
-                class="inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-blue-600"
+                class="inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-indigo-600"
             >
 
                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -29,7 +29,7 @@
 
         <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
 
-            <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-8 sm:px-8">
+            <div class="bg-gradient-to-r from-indigo-600 to-yellow-400 px-6 py-8 sm:px-8">
 
                 <div class="flex flex-col items-center gap-4 sm:flex-row">
                     
@@ -44,7 +44,7 @@
                 {% else %}
 
                     <div
-                        class="flex h-20 w-20 items-center justify-center rounded-full bg-white text-2xl font-bold uppercase text-blue-700 shadow-lg"
+                        class="flex h-20 w-20 items-center justify-center rounded-full bg-white text-2xl font-bold uppercase text-indigo-700 shadow-lg"
                     >
                         {% if my_user.first_name %}
                             {{ my_user.first_name|first|upper }}
@@ -226,7 +226,7 @@
 
                     <a
                         href="{% url 'edit_user' my_user.id %}"
-                        class="rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700"
+                        class="rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-700"
                     >
                         Edit Profile
                     </a>

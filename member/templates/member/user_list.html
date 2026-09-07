@@ -5,11 +5,11 @@
 {% block content %}
 
 <div class="min-h-screen bg-slate-100">
-    <main class="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
+    <main class="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
 
         <div class="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>
-                <div class="mb-2 flex items-center gap-2 text-sm font-medium text-blue-600">
+                <div class="mb-2 flex items-center gap-2 text-sm font-medium text-yellow-600">
                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path
                             stroke-linecap="round"
@@ -21,11 +21,11 @@
                     Profile Administration
                 </div>
 
-                <h1 class="text-3xl font-bold tracking-tight text-slate-900">
+                <h1 class="text-3xl font-bold tracking-tight text-indigo-900">
                     Profile Management
                 </h1>
 
-                <p class="mt-2 text-sm text-slate-500">
+                <p class="mt-2 text-sm text-indigo-950">
                     Manage all registered users and their account information.
                 </p>
             </div>
@@ -34,43 +34,80 @@
 
         <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
 
-            <div class="border-b border-slate-100 px-6 py-5">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h2 class="font-bold text-slate-900">
-                            Register{{ users|length|pluralize }}
-                        </h2>
+                        <div class="flex flex-col gap-3 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
 
-                        <p class="mt-1 text-sm text-slate-500">
-                            {{ users|length }} user{{ users|length|pluralize }}
-                        </p>
+                <div>
+
+                    <div class="flex items-center gap-3">
+
+                        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-yellow-50">
+
+                            <svg
+                                class="h-5 w-5 text-yellow-600"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h6l5 5v11a2 2 0 01-2 2z"
+                                />
+                            </svg>
+
+                        </div>
+
+                        <div>
+
+                            <h3 class="font-bold text-indigo-900">
+                                Registers
+                            </h3>
+
+                        </div>
+
                     </div>
+
                 </div>
+
+
+                <div class="flex items-center gap-2 bg-yellow-50 rounded-full px-3 py-1 text-yellow-600">
+
+                    <span class="font-bold">
+                        {{ users|length }}
+                    </span>
+
+                    <span class="">
+                        user{{ users|length|pluralize }}
+                    </span>
+
+                </div>
+
             </div>
 
 
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
 
-                    <thead class="bg-slate-50">
+                    <thead class="border-b border-indigo-800 bg-slate-50">
                         <tr>
-                            <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                            <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
                                 User
                             </th>
 
-                            <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                            <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
                                 Username
                             </th>
 
-                            <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                            <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
                                 Email
                             </th>
 
-                            <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                            <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
                                 Role
                             </th>
 
-                            <th class="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">
+                            <th class="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">
                                 Actions
                             </th>
                         </tr>
@@ -94,7 +131,7 @@
                                             class="h-12 w-12 rounded-full object-cover shadow-sm ring-2 ring-slate-100"
                                         >
                                     {% else %}
-                                        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-lg font-bold uppercase text-blue-700">
+                                        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100 text-lg font-bold uppercase text-indigo-700">
                                             {% if user.first_name %}
                                                 {{ user.first_name|first|upper }}
                                             {% else %}
@@ -102,17 +139,6 @@
                                             {% endif %}
                                         </div>
                                     {% endif %}
-
-                                    <div>
-                                        <p class="text-sm font-semibold text-slate-800">
-                                            {% if user.get_full_name %}
-                                                {{ user.get_full_name }}
-                                            {% else %}
-                                                {{ user.username }}
-                                            {% endif %}
-                                        </p>
-
-                                    </div>
 
                                 </div>
                             </td>

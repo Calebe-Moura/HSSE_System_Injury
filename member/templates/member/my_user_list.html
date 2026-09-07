@@ -4,22 +4,22 @@
 
 {% block content %}
 
-<div class="min-h-screen bg-slate-100">
+<div class="min-h-screen bg-slate-50">
 
 <main class="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
 
     <!-- Header -->
     <div class="mb-8">
 
-        <p class="text-sm font-medium text-blue-600">
+        <p class="text-sm font-medium text-yellow-600">
             Account
         </p>
 
-        <h1 class="mt-1 text-3xl font-bold tracking-tight text-slate-900">
+        <h1 class="mt-1 text-3xl font-bold tracking-tight text-indigo-900">
             My Profile
         </h1>
 
-        <p class="mt-2 text-sm text-slate-500">
+        <p class="mt-2 text-sm text-indigo-950">
             View and manage your personal account information.
         </p>
 
@@ -30,7 +30,7 @@
     <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
 
         <!-- Profile Header -->
-        <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-8 sm:px-8">
+        <div class="bg-gradient-to-r from-indigo-600 to-yellow-400 px-6 py-5 sm:px-8">
 
             <div class="flex flex-col items-center gap-4 sm:flex-row">
 
@@ -46,7 +46,7 @@
                 {% else %}
 
                     <div
-                        class="flex h-20 w-20 items-center justify-center rounded-full bg-white text-2xl font-bold uppercase text-blue-700 shadow-lg"
+                        class="flex h-20 w-20 items-center justify-center rounded-full bg-white text-2xl font-bold uppercase text-indigo-700 shadow-lg"
                     >
                         {% if my_user.first_name %}
                             {{ my_user.first_name|first|upper }}
@@ -71,7 +71,7 @@
 
                     </h1>
 
-                    <p class="mt-1 text-sm text-blue-100">
+                    <p class="mt-1 text-sm text-indigo-50 font-semibold">
                         @{{ my_user.username }}
                     </p>
 
@@ -87,11 +87,11 @@
 
             <div class="mb-6">
 
-                <h2 class="text-lg font-bold text-slate-900">
+                <h2 class="text-lg font-bold text-indigo-900">
                     Personal Information
                 </h2>
 
-                <p class="mt-1 text-sm text-slate-500">
+                <p class="mt-1 text-sm text-indigo-950">
                     Your account information.
                 </p>
 
@@ -231,7 +231,7 @@
 
                 <a
                     href="{% url 'edit_my_user' %}"
-                    class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700"
+                    class="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-700"
                 >
 
                     <svg
