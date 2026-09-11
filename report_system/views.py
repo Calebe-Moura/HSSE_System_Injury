@@ -17,11 +17,7 @@ def start(request):
     # ============================================================
 
     my_report_injury = (
-        Injury.objects
-        .filter(
-            Q(responsible=request.user) |
-            Q(reported_by=request.user)
-        )
+        Injury.objects.filter(Q(responsible=request.user) | Q(reported_by=request.user))
         .select_related(
             "responsible",
             "reported_by",
@@ -40,10 +36,7 @@ def start(request):
     # ============================================================
 
     my_action_injury = (
-        ActionInjury.objects
-        .filter(
-            responsible=request.user
-        )
+        ActionInjury.objects.filter(responsible=request.user)
         .select_related(
             "injury",
             "responsible",
@@ -64,4 +57,13 @@ def start(request):
         request,
         "start/index.html",
         context,
+    )
+
+
+def application(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
+    return render(
+        request,
+        "application/index.html",
     )
