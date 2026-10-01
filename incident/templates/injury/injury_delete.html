@@ -61,21 +61,28 @@
 
                 <div class="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-5">
 
-                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                        Incident
+                    <p class="text-xs font-semibold uppercase tracking-wider text-yellow-600">
+                        
+                        {% if injury.unit == 'ANY' %}
+                        FPSO Anna Nery
+                        {% elif injury.unit == 'ATL' %}
+                        FPSO Atlanta
+                        {% elif injury.unit == 'MQU' %}
+                        FPSO Maria Quiteria
+                        {% else %}
+                        Office or Warehouses
+                        {% endif %}
+                            
                     </p>
 
-                    <p class="mt-2 font-mono text-sm font-bold text-blue-600">
+                    <p class="mt-2 font-mono text-sm font-bold text-indigo-800">
                         {{ injury.cod_sys }}
                     </p>
 
-                    <p class="mt-2 text-base font-semibold text-slate-900">
+                    <p class="mt-2 text-base font-semibold text-indigo-950">
                         {{ injury.title }}
                     </p>
 
-                    <p class="mt-1 text-sm text-slate-500">
-                        {{ injury.unit }}
-                    </p>
 
                 </div>
 

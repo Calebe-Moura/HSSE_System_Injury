@@ -11,6 +11,7 @@ UNIT_CHOICES = (
     ("ANY", "Anna Nery"),
     ("ATL", "Atlanta"),
     ("MQU", "Maria Quitéria"),
+    ("OOW", "Office or Warehouses"),
 )
 
 TYPE_CHOICES = (
